@@ -1,0 +1,7 @@
+{
+  "name": "pixyo-frontend",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
