@@ -1,9 +1,10 @@
 package com.app.pixett.repository;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.Repository;
 
 import com.app.pixett.entities.Event;
 
-public interface EventRepository extends MongoRepository<Event, String>{
+@org.springframework.stereotype.Repository
+public interface EventRepository extends Repository<Event, String>{
 
 }

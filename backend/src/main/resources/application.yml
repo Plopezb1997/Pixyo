@@ -1,5 +1,11 @@
-cloud:
- aws:
-   credentials:
-     profile-name: default
-     
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: root
+    url: jdbc:mariadb://localhost:3306/pixyo
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    generate-ddl: false
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect

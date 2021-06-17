@@ -1,8 +1,8 @@
 package com.app.pixett.repository;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.Repository;
 
-import com.app.pixett.entities.Pic;
-
-public interface PicRepository extends MongoRepository<Pic, String>{
+//import com.app.pixett.entities.Pic;
+@org.springframework.stereotype.Repository
+public interface PicRepository /*extends Repository<Pic, String>*/{
 }
