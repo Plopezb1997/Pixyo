@@ -20,7 +20,7 @@ public class User {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column
-	private String userId;
+	private String userid;
 	@Column
 	private String email;
 	@Column
@@ -44,10 +44,10 @@ public class User {
 	
 	
 	public String getUserId() {
-		return userId;
+		return userid;
 	}
 	public void setUserId(String userId) {
-		this.userId = userId;
+		this.userid = userId;
 	}
 	public String getEmail() {
 		return email;

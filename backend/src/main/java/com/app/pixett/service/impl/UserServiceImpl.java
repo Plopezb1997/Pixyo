@@ -8,19 +8,30 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 import com.app.pixett.entities.User;
 import com.app.pixett.repository.UserRepository;
 import com.app.pixett.service.UserService;
 
+@Service
 public class UserServiceImpl implements UserService{
 	
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 	
 	public User findUser(User user){
 		User userFound = userRepository.findByPhoneNumberAndPassword(user.getPhoneNumber(), user.getPassword());
 		return userFound;
+	}
+	
+	public User findPhone(String phone) {
+		User userFound = userRepository.findByPhoneNumber(phone);
+		return userFound;
+	}
+	
+	public User register(User user){
+		return this.userRepository.save(user);
 	}
 
 //	@Override
@@ -73,7 +84,6 @@ public class UserServiceImpl implements UserService{
 
 //	@Override
 	public <S extends User> S save(S entity) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
