@@ -6,7 +6,7 @@ import { HomeEventComponent } from './view/event/home-event/home-event.component
 import { JoinEventComponent } from './view/event/join-event/join-event.component';
 import { NewEventComponent } from './view/event/new-event/new-event.component';
 import { ShareEventComponent } from './view/event/share-event/share-event.component';
-import { UploadPicComponent } from './view/upload-pic/upload-pic.component';
+import { UploadPicComponent } from './view/user/upload-pic/upload-pic.component';
 
 const routes: Routes = [
   {
