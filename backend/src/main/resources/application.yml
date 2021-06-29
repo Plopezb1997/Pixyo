@@ -9,3 +9,7 @@ spring:
     show-sql: true
     generate-ddl: false
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+pixyo:
+  app:
+    jwtSecret: pixyoSecretKey
+    jwtExpirationMs: 86400000
