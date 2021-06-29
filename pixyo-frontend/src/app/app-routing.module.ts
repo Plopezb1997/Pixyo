@@ -5,8 +5,10 @@ import { EditEventComponent } from './view/event/edit-event/edit-event.component
 import { HomeEventComponent } from './view/event/home-event/home-event.component';
 import { JoinEventComponent } from './view/event/join-event/join-event.component';
 import { NewEventComponent } from './view/event/new-event/new-event.component';
+import { PhotoUploadedComponent } from './view/event/photo-uploaded/photo-uploaded.component';
+import { RegisterLoginComponent } from './view/event/register-login/register-login.component';
 import { ShareEventComponent } from './view/event/share-event/share-event.component';
-import { UploadPicComponent } from './view/user/upload-pic/upload-pic.component';
+import { UploadPicComponent } from './view/event/upload-pic/upload-pic.component';
 
 const routes: Routes = [
   {
@@ -22,6 +24,12 @@ const routes: Routes = [
     path: 'joinEvent',
     pathMatch: 'full',
     component: JoinEventComponent,
+    data:Event
+  },
+  {
+    path: 'register',
+    pathMatch: 'full',
+    component: RegisterLoginComponent,
     data:Event
   },
   {
@@ -51,6 +59,12 @@ const routes: Routes = [
     path: 'uploadPic',
     pathMatch: 'full',
     component: UploadPicComponent,
+    data:User
+  },
+  {
+    path: 'picUploaded',
+    pathMatch: 'full',
+    component: PhotoUploadedComponent,
     data:User
   }
 ];

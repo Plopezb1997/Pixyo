@@ -6,7 +6,7 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { UploadPicComponent } from './view/user/upload-pic/upload-pic.component';
+import { UploadPicComponent } from './view/event/upload-pic/upload-pic.component';
 import { NewEventComponent } from './view/event/new-event/new-event.component';
 
 @NgModule({

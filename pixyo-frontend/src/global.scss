@@ -24,3 +24,12 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+:root{
+    
+        /* Set the background of the entire app */
+        background: linear-gradient(98.03deg, #2DA5DF 6.83%, #4F94D5 50.63%, #7B98D2 96.43%);
+        width: 100%;
+        height: 100%;
+        border-color: black;
+}
