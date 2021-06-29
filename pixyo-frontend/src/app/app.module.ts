@@ -8,12 +8,13 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { UploadPicComponent } from './view/event/upload-pic/upload-pic.component';
 import { NewEventComponent } from './view/event/new-event/new-event.component';
+import { authInterceptorProviders } from './helpers/auth.interceptor';
 
 @NgModule({
   declarations: [AppComponent, UploadPicComponent, NewEventComponent],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, authInterceptorProviders ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
