@@ -11,7 +11,7 @@ export class HomePage implements OnInit{
   constructor(public router: Router) {}
 
   ngOnInit(){
-    setTimeout(()=>this.router.navigate(['/register']), 5000);
+    setTimeout(()=>this.router.navigate(['/register']), 3000);
   }
 
 }
