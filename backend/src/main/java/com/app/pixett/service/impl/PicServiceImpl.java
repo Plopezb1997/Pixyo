@@ -9,8 +9,7 @@ import java.io.IOException;
 
 import com.app.pixett.service.PicService;
 
-import Luxand.FSDK;
-import Luxand.FSDK.HImage;
+
 
 public class PicServiceImpl implements PicService{
 
