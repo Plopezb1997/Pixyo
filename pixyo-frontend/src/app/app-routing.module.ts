@@ -6,8 +6,12 @@ import { HomeEventComponent } from './view/event/home-event/home-event.component
 import { JoinEventComponent } from './view/event/join-event/join-event.component';
 import { NewEventComponent } from './view/event/new-event/new-event.component';
 import { PhotoUploadedComponent } from './view/event/photo-uploaded/photo-uploaded.component';
-import { RegisterLoginComponent } from './view/user/register-login/register-login.component';
+//import { RegisterLoginComponent } from './view/event/register-login/register-login.component';
+
 import { ShareEventComponent } from './view/event/share-event/share-event.component';
+//import { UploadPicComponent } from './view/event/upload-pic/upload-pic.component';
+import { KeyEventComponent } from './view/key-event/key-event.component';
+import { RegisterLoginComponent } from './view/user/register-login/register-login.component';
 import { UploadPicComponent } from './view/user/upload-pic/upload-pic.component';
 
 const routes: Routes = [
@@ -23,17 +27,20 @@ const routes: Routes = [
   {
     path: 'joinEvent',
     pathMatch: 'full',
-    component: JoinEventComponent
+    component: JoinEventComponent,
+    data:Event
   },
   {
     path: 'register',
     pathMatch: 'full',
-    component: RegisterLoginComponent
+    component: RegisterLoginComponent,
+    data:Event
   },
   {
     path: 'editEvent',
     pathMatch: 'full',
-    component: EditEventComponent
+    component: EditEventComponent,
+    data:Event
   },
   {
     path: 'newEvent',
@@ -41,24 +48,33 @@ const routes: Routes = [
     component: NewEventComponent
   },
   {
+    path: 'keyEvent',
+    pathMatch: 'full',
+    component: KeyEventComponent
+  },
+  {
     path: 'homeEvent',
     pathMatch: 'full',
-    component: HomeEventComponent
+    component: HomeEventComponent,
+    data:User
   },
   {
     path: 'shareEvent',
     pathMatch: 'full',
-    component: ShareEventComponent
+    component: ShareEventComponent,
+    data:User
   },
   {
     path: 'uploadPic',
     pathMatch: 'full',
-    component: UploadPicComponent
+    component: UploadPicComponent,
+    data:User
   },
   {
     path: 'picUploaded',
     pathMatch: 'full',
-    component: PhotoUploadedComponent
+    component: PhotoUploadedComponent,
+    data:User
   }
 ];
 

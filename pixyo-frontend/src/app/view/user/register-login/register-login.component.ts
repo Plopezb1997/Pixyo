@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { User } from 'src/app/entities/User';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
+import { FormGroup } from '@angular/forms';
+
 /*import * as $ from 'jquery';
 import 'jqueryui';*/
 @Component({
@@ -14,7 +16,8 @@ export class RegisterLoginComponent implements OnInit {
 
   user:User = new User();
   isRegister:boolean=true;
-  disable:boolean=null;
+  existsNumber:boolean=null;
+  formlogin:FormGroup;
 
   constructor(private cd: ChangeDetectorRef,
           private authservice: AuthService,
@@ -29,16 +32,19 @@ export class RegisterLoginComponent implements OnInit {
   }
 
   async register(){
-    sessionStorage.setItem("userTemp", JSON.stringify(this.user));
-    this.router.navigate(['/uploadPic']);
-    
+    //if(this.formlogin.valid){
+      sessionStorage.setItem("userTemp", JSON.stringify(this.user));
+      this.router.navigate(['/uploadPic']);
+   // }    
   }
 
   async login(){
-    let result = await this.authservice.login(this.user).toPromise();
-    if(result){
-      this.router.navigate(['/homeEvent']);
-    }
+   // if(this.formlogin.valid){
+      let result = await this.authservice.login(this.user).toPromise();
+      if(result){
+        this.router.navigate(['/homeEvent']);
+      }
+   // }
   }
 
   log(){
@@ -49,9 +55,9 @@ export class RegisterLoginComponent implements OnInit {
     if(this.isRegister){
       this.authservice.checkPhoneNumber(this.user.phoneNumber).subscribe(result=>{
         if(result){
-          this.disable = true;
+          this.existsNumber = true;
         }else{
-          this.disable = null;
+          this.existsNumber = false;
         }
       });
     }
