@@ -34,8 +34,15 @@
     width: 192px;
     height: 40px;
     font-size: 14px;
-    margin-bottom: 86px;
-    margin-top: 56px;
+    margin-bottom: 15px;
+    margin-top: 50px;
+  }
+  div.icons{
+    text-align: -webkit-center;
+  }
+  p{
+      font-size: 14px;
+      color: gray;
   }
   h4{
     text-align:center;
@@ -51,7 +58,7 @@
   .formulario {
     padding-left: 58px;
     padding-right: 59px;
-    border-radius: 12pxio;
+    border-radius: 12px;
    
   }
   ion-item {
@@ -59,7 +66,12 @@
     padding-bottom: 20px;
     --border-color: 1px;
     --padding-start: 0px;
+    text-align: -webkit-center;
+    font-size: 16px;
     
+  }
+  ion-list{
+      border-radius: 12px   ;
   }
  
   div#footer{

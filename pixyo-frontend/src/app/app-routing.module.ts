@@ -9,6 +9,7 @@ import { PhotoUploadedComponent } from './view/event/photo-uploaded/photo-upload
 import { RegisterLoginComponent } from './view/event/register-login/register-login.component';
 import { ShareEventComponent } from './view/event/share-event/share-event.component';
 import { UploadPicComponent } from './view/event/upload-pic/upload-pic.component';
+import { KeyEventComponent } from './view/key-event/key-event.component';
 
 const routes: Routes = [
   {
@@ -42,6 +43,11 @@ const routes: Routes = [
     path: 'newEvent',
     pathMatch: 'full',
     component: NewEventComponent
+  },
+  {
+    path: 'keyEvent',
+    pathMatch: 'full',
+    component: KeyEventComponent
   },
   {
     path: 'homeEvent',

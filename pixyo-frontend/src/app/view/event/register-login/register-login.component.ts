@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-register-login',
@@ -7,8 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegisterLoginComponent implements OnInit {
 
-  constructor() { }
+  isRegister:boolean=true;
+
+  constructor(private cd: ChangeDetectorRef) { }
 
   ngOnInit() {}
+
+  switchMode(){
+    this.isRegister = !this.isRegister;
+    this.cd.detectChanges();
+  }
 
 }
