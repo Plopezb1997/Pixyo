@@ -11,13 +11,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.pixett.Dto.UserDto;
@@ -43,7 +43,10 @@ public class UserController {
 	@Autowired
 	JwtUtils jwtUtils;
 	
+	@Autowired
+	PasswordEncoder encoder;
 	
+	@CrossOrigin
 	@PostMapping("/auth/user/login")
 	public ResponseEntity<JwtResponse> findUser(@RequestBody UserDto user){
 		Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getPhoneNumber(), user.getPassword()));
@@ -69,7 +72,7 @@ public class UserController {
 				HttpStatus.NOT_FOUND);*/
 	}
 	
-	
+	@CrossOrigin
 	@PostMapping("/auth/user/register")
 	public ResponseEntity<UserDto> register(@RequestBody UserDto user){
 		User userFound = userService.register(modelMapper.map(user, User.class));
@@ -80,12 +83,12 @@ public class UserController {
 				HttpStatus.NOT_FOUND);
 	}
 	
-	
-	@GetMapping("/user/phoneNumberExists/{phone}")
+	@CrossOrigin
+	@GetMapping("/auth/user/phoneNumberExists/{phone}")
 	public ResponseEntity<Boolean> findPhone(@PathVariable String phone){
 		User userFound = userService.findPhone(phone);
-		if(userFound==null) {
-			return new ResponseEntity<>(true, HttpStatus.NOT_FOUND);
+		if(userFound!=null) {
+			return new ResponseEntity<>(true, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(false, HttpStatus.OK);
 	}

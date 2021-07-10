@@ -24,4 +24,8 @@ export class AuthService {
   register(user: User): Observable<any> {
     return this.http.post(AUTH_API + '/register', user, httpOptions);
   }
+
+  checkPhoneNumber(phoneNumber: string): Observable<boolean> {
+    return this.http.get<boolean>(AUTH_API + '/phoneNumberExists/'+phoneNumber, httpOptions);
+  }
 }

@@ -27,6 +27,8 @@
     "@capacitor/keyboard": "1.0.1",
     "@ionic/angular": "^5.5.2",
     "capacitor": "^0.5.5",
+    "jquery": "^3.6.0",
+    "jquery-ui": "^1.12.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.4"

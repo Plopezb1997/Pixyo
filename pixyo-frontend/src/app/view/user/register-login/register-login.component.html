@@ -1,0 +1,42 @@
+<ion-content padding>
+  <div class="background">
+  <div class="principal">
+    <h4>
+      <b>Let's get started!</b>
+</h4>
+<!--<form [formGroup]="formlogin">-->
+    <ion-list class="formulario">
+      
+      <ion-item *ngIf="isRegister">
+        
+        <ion-input class="inputr" type="text" placeholder="Name" required [(ngModel)]="user.name" ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        
+        <ion-input  class="inputr" type="text" placeholder="Phone number" required [(ngModel)]="user.phoneNumber" (focusout)="existsPhone($event);"></ion-input>
+        
+      </ion-item>
+      <ion-note color="danger" *ngIf="existsNumber">Phone Number already exists</ion-note>
+      <ion-item>
+        
+        <ion-input class="inputr" type="password" placeholder="Password" required [(ngModel)]="user.password" ></ion-input>
+        
+      </ion-item>
+      
+      <ion-item *ngIf="isRegister">
+       
+        <ion-input class="inputr" type="password" placeholder="Confirm password" required ></ion-input>
+      </ion-item>
+      <button *ngIf="isRegister" ion-button block (click)="register()" >Create Account</button>
+      <button *ngIf="!isRegister" ion-button block (click)="login()">Login</button>
+  
+    </ion-list>
+  <!--</form>-->
+    <div id="footer"><ion-label>
+      <h5 *ngIf="isRegister">Already have an account? <a  (click)="switchMode()">Login</a></h5>
+      <h5 *ngIf="!isRegister">Don't have an account? <a  (click)="switchMode()">Register</a></h5>
+    </ion-label></div>
+  </div>
+</div>
+</ion-content>
