@@ -6,5 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("eventService")
 @Transactional
 public interface EventService {
+	
+	
+	
+	
 
 }
