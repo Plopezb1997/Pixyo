@@ -8,6 +8,10 @@ import com.app.pixett.entities.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class EventFilter implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4221221712267912928L;
 	private String eventId;
 	private String name;
 	private String status;

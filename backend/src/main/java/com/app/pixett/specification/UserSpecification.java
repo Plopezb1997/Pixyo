@@ -13,6 +13,11 @@ import com.nimbusds.oauth2.sdk.util.StringUtils;
 
 public class UserSpecification implements Specification<User>{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3110033578202053650L;
+
 	private final String USER_ID = "userid";
 	
 	private final String EMAIL = "email";

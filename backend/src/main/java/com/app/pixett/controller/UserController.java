@@ -26,6 +26,7 @@ import com.app.pixett.core.JwtUtils;
 import com.app.pixett.core.UserDetailsImpl;
 import com.app.pixett.entities.User;
 import com.app.pixett.service.UserService;
+import com.app.pixett.specification.UserSpecification;
 
 @RestController
 @RequestMapping(value = "")
@@ -92,5 +93,16 @@ public class UserController {
 		}
 		return new ResponseEntity<>(false, HttpStatus.OK);
 	}
+	
+	@PostMapping("/find")
+	public ResponseEntity<List<UserDto>> findEvent(@RequestBody UserSpecification spec){
+		List<User> events = userService.findUsers(spec);
+		if(events!=null && !events.isEmpty() ) {
+			return new ResponseEntity<>(events.stream().map(event->modelMapper.map(event, UserDto.class)).collect(Collectors.toList()), HttpStatus.OK);
+		}else{
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+	}
+	
 
 }

@@ -2,7 +2,6 @@ package com.app.pixett.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,6 +15,7 @@ import com.app.pixett.core.UserDetailsImpl;
 import com.app.pixett.entities.User;
 import com.app.pixett.repository.UserRepository;
 import com.app.pixett.service.UserService;
+import com.app.pixett.specification.UserSpecification;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -56,6 +56,10 @@ public class UserServiceImpl implements UserService{
 				user.getEmail(),
 				user.getPassword(), 
 				authorities);
+	}
+	
+	public List<User> findUsers(UserSpecification spec){
+		return this.userRepository.findAll(spec);
 	}
 
 }

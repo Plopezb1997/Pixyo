@@ -3,6 +3,10 @@ package com.app.pixett.Dto;
 import java.io.Serializable;
 
 public class UserDto implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6609737486821270813L;
 	private String userId;
 	private String email;
 	private String password;

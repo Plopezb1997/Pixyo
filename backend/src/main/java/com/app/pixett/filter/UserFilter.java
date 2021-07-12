@@ -3,6 +3,10 @@ package com.app.pixett.filter;
 import java.io.Serializable;
 
 public class UserFilter implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5085859201555671211L;
 	private String userId;
 	private String email;
 	private String phoneNumber;

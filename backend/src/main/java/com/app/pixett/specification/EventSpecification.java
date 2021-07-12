@@ -14,6 +14,10 @@ import com.nimbusds.oauth2.sdk.util.StringUtils;
 public class EventSpecification implements Specification<Event>{
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4476454980793519973L;
 	private final String EVENT_ID = "eventId";
 	private final String NAME = "name";
 	private final String STATUS = "status";
