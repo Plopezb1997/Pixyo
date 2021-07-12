@@ -1,12 +1,17 @@
 package com.app.pixett.Dto;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 import com.app.pixett.entities.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class EventDto {
+public class EventDto implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3826810036104393277L;
 	private String eventId;
 	private String name;
 	private String status;
@@ -14,7 +19,7 @@ public class EventDto {
 	private String eventCode;
 	private Date startDate;
 	private Date endDate;
-	private List<User> assistants;
+	private List<UserDto> assistants;
 	private String title;
 	private User CreatorId;
 	public String getEventId() {
@@ -63,10 +68,10 @@ public class EventDto {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-	public List<User> getAssistants() {
+	public List<UserDto> getAssistants() {
 		return assistants;
 	}
-	public void setAssistants(List<User> assistants) {
+	public void setAssistants(List<UserDto> assistants) {
 		this.assistants = assistants;
 	}
 	public String getTitle() {

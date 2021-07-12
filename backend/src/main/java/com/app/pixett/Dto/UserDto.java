@@ -1,6 +1,9 @@
 package com.app.pixett.Dto;
 
 import java.io.Serializable;
+import java.util.List;
+
+import com.app.pixett.entities.Event;
 
 public class UserDto implements Serializable{
 	/**
@@ -16,6 +19,7 @@ public class UserDto implements Serializable{
 	private String paymentMethod;
 	private String paymentPlan;
 	private String face;
+	private List<Event> events;
 	public String getUserId() {
 		return userId;
 	}
@@ -69,5 +73,11 @@ public class UserDto implements Serializable{
 	}
 	public void setFace(String face) {
 		this.face = face;
+	}
+	public List<Event> getEvents() {
+		return events;
+	}
+	public void setEvents(List<Event> events) {
+		this.events = events;
 	}
 }

@@ -27,6 +27,8 @@ import com.app.pixett.specification.EventSpecification;
 @RequestMapping(value = "/event")
 public class EventController {
 	
+	
+	
 	@Autowired
 	EventService eventService;
 	
@@ -52,6 +54,12 @@ public class EventController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 	}
+	
+	/*private List<EventDto> mapEvents(List<Event> events){
+		TypeMap<Event, EventDto> typeMap = modelMapper.createTypeMap(Event.class, EventDto.class).addMapping(Event::getAssistants, EventDto::setAssistants).addMappings(mapper->mapper.);
+		return events.stream().map(event->modelMapper.map(event, EventDto.class)).map(Event::getAssistants, EventDto::setAssistants).collect(Collectors.toList());
+		
+	}*/
 	
 	
 
