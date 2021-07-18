@@ -74,8 +74,7 @@ const routes: Routes = [
     path: 'uploadPic',
     pathMatch: 'full',
     component: UploadPicComponent,
-    data:User,
-    canActivate: [AuthGuardService] 
+    data:User
   },
   {
     path: 'picUploaded',

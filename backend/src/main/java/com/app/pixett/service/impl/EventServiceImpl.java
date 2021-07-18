@@ -3,12 +3,14 @@ package com.app.pixett.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.app.pixett.entities.Event;
 import com.app.pixett.repository.EventRepository;
 import com.app.pixett.service.EventService;
 import com.app.pixett.specification.EventSpecification;
 
+@Service
 public class EventServiceImpl implements EventService{
 	@Autowired
 	EventRepository eventRepository;

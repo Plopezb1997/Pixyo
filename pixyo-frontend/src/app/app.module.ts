@@ -11,6 +11,8 @@ import { ShowErrorsComponent } from './core/validation/show-errors/show-errors.c
 import { AuthGuardService } from './helpers/auth.guard';
 import { authInterceptorProviders } from './helpers/auth.interceptor';
 import { AuthService } from './services/auth.service';
+import { EventService } from './services/event.service';
+import { UserService } from './services/user.service';
 import { HomeEventComponent } from './view/event/home-event/home-event.component';
 import { NewEventComponent } from './view/event/new-event/new-event.component';
 import { RegisterLoginComponent } from './view/user/register-login/register-login.component';
@@ -22,7 +24,7 @@ import { UploadPicComponent } from './view/user/upload-pic/upload-pic.component'
   declarations: [AppComponent, RegisterLoginComponent, UploadPicComponent,HomeEventComponent, NewEventComponent, ShowErrorsComponent],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, HttpClientModule, ReactiveFormsModule, TranslateModule.forRoot()],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, authInterceptorProviders, AuthService, AuthGuardService],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, authInterceptorProviders, AuthService, AuthGuardService, UserService, EventService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

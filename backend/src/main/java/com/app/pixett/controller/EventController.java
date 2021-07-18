@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.pixett.Dto.EventDto;
 import com.app.pixett.entities.Event;
+import com.app.pixett.filter.EventFilter;
 import com.app.pixett.service.EventService;
 import com.app.pixett.specification.EventSpecification;
 
@@ -27,8 +28,6 @@ import com.app.pixett.specification.EventSpecification;
 @RequestMapping(value = "/event")
 public class EventController {
 	
-	
-	
 	@Autowired
 	EventService eventService;
 	
@@ -36,8 +35,8 @@ public class EventController {
     ModelMapper modelMapper;
 	
 	@PostMapping("/find")
-	public ResponseEntity<List<EventDto>> findEvent(@RequestBody EventSpecification spec){
-		List<Event> events = eventService.findEvents(spec);
+	public ResponseEntity<List<EventDto>> findEvent(@RequestBody EventFilter filter){
+		List<Event> events = eventService.findEvents(new EventSpecification(filter));
 		if(events!=null && !events.isEmpty() ) {
 			return new ResponseEntity<>(events.stream().map(event->modelMapper.map(event, EventDto.class)).collect(Collectors.toList()), HttpStatus.OK);
 		}else{
@@ -53,6 +52,12 @@ public class EventController {
 		}else{
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
+	}
+	
+	@PostMapping("/save")
+	public ResponseEntity<Boolean> saveEvent(@RequestBody EventDto event){
+		eventService.saveEvent(modelMapper.map(event, Event.class));
+		return new ResponseEntity<>(true, HttpStatus.OK);
 	}
 	
 	/*private List<EventDto> mapEvents(List<Event> events){

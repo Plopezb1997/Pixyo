@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.app.pixett.entities.Event;
 import com.app.pixett.specification.EventSpecification;
 
-@Service("eventService")
+@Service
 @Transactional
 public interface EventService {
 	
