@@ -9,7 +9,7 @@ import { NewEventComponent } from './view/event/new-event/new-event.component';
 import { PhotoUploadedComponent } from './view/event/photo-uploaded/photo-uploaded.component';
 //import { RegisterLoginComponent } from './view/event/register-login/register-login.component';
 
-import { ShareEventComponent } from './view/event/share-event/share-event.component';
+
 //import { UploadPicComponent } from './view/event/upload-pic/upload-pic.component';
 
 import { RegisterLoginComponent } from './view/user/register-login/register-login.component';
@@ -57,12 +57,6 @@ const routes: Routes = [
     path: 'homeEvent',
     pathMatch: 'full',
     component: HomeEventComponent,
-    data:User
-  },
-  {
-    path: 'shareEvent',
-    pathMatch: 'full',
-    component: ShareEventComponent,
     data:User
   },
   {
