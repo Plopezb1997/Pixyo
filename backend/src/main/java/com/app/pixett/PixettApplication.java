@@ -10,7 +10,9 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication(scanBasePackages={
-"com.app.pixett"},exclude = {SecurityAutoConfiguration.class })
+"com.app.pixett"}
+//,exclude = {SecurityAutoConfiguration.class }
+)
 @EntityScan(basePackages = { "com.app.pixett.entities" })
 public class PixettApplication {
 	

@@ -24,7 +24,8 @@ import { UploadPicComponent } from './view/user/upload-pic/upload-pic.component'
   declarations: [AppComponent, RegisterLoginComponent, UploadPicComponent,HomeEventComponent, NewEventComponent, ShowErrorsComponent],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, HttpClientModule, ReactiveFormsModule, TranslateModule.forRoot()],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, authInterceptorProviders, AuthService, AuthGuardService, UserService, EventService],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },// authInterceptorProviders, AuthService, AuthGuardService, 
+    UserService, EventService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
