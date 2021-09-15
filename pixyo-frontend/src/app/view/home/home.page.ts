@@ -24,9 +24,9 @@ export class HomePage implements OnInit {
               (result) => {
                 if (result) {
                   console.log('Stored user' + JSON.stringify(result));
-               /*   this.router.navigate(['/homeEvent']);
+                  this.router.navigate(['/homeEvent']);
                 }else{
-                  console.log('New user');*/
+                  console.log('New user');
                   this.router.navigate(['/register']);
                 }
               },
