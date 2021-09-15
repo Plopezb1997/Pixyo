@@ -44,6 +44,16 @@ public class EventController {
 		}
 	}
 	
+	@PostMapping("/findJoinedEvents")
+	public ResponseEntity<List<EventDto>> findJoinedEvents(@RequestBody EventFilter filter){
+		List<Event> events = eventService.findJoinedEvents(new EventSpecification(filter));
+		if(events!=null && !events.isEmpty() ) {
+			return new ResponseEntity<>(events.stream().map(event->modelMapper.map(event, EventDto.class)).collect(Collectors.toList()), HttpStatus.OK);
+		}else{
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+	}
+	
 	@GetMapping("/list")
 	public ResponseEntity<List<EventDto>> listEvents(@PathVariable String userId){
 		List<Event> events = eventService.listEvents();
@@ -55,9 +65,9 @@ public class EventController {
 	}
 	
 	@PostMapping("/save")
-	public ResponseEntity<Boolean> saveEvent(@RequestBody EventDto event){
-		eventService.saveEvent(modelMapper.map(event, Event.class));
-		return new ResponseEntity<>(true, HttpStatus.OK);
+	public ResponseEntity<Event> saveEvent(@RequestBody EventDto event){
+		Event resultEvent = eventService.saveEvent(modelMapper.map(event, Event.class));
+		return new ResponseEntity<>(resultEvent, HttpStatus.OK);
 	}
 	
 	/*private List<EventDto> mapEvents(List<Event> events){

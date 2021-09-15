@@ -22,7 +22,7 @@ public class Event {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column
-	private String eventId;
+	private String eventid;
 	@Column
 	private String name;
 	@Column
@@ -38,18 +38,17 @@ public class Event {
 	@ManyToMany
 	@JoinTable(
 			  name = "assistants", 
-			  joinColumns = @JoinColumn(name = "Eventid"))
+			  joinColumns = @JoinColumn(name = "Eventid"),
+			  inverseJoinColumns = @JoinColumn(name="userid", nullable = false))
 	private List<User> assistants;
-	@Column
-	private String title;
 	@ManyToOne
-	@JoinColumn(name = "UserId")
-	private User CreatorId;
+	@JoinColumn(name = "creatorid")
+	private User creator;
 	public String getEventId() {
-		return eventId;
+		return eventid;
 	}
 	public void setEventId(String eventId) {
-		this.eventId = eventId;
+		this.eventid = eventId;
 	}
 	public String getName() {
 		return name;
@@ -93,17 +92,12 @@ public class Event {
 	public void setAssistants(List<User> assistant) {
 		this.assistants = assistant;
 	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
+	
 	public User getCreatorId() {
-		return CreatorId;
+		return creator;
 	}
 	public void setCreatorId(User creatorId) {
-		CreatorId = creatorId;
+		creator = creatorId;
 	}
 	
 	

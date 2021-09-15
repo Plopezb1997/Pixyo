@@ -20,4 +20,6 @@ public interface UserService extends UserDetailsService{
 	public User register(User user);
 	
 	public List<User> findUsers(UserSpecification spec);
+
+	public User update(User map);
 }

@@ -2,6 +2,7 @@ package com.app.pixett.entities;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -40,6 +42,13 @@ public class User {
 	private byte[] face;
 	@ManyToMany(mappedBy = "assistants")
 	private List<Event> events;
+	
+	@OneToMany(
+	        mappedBy = "user",
+	        cascade = CascadeType.ALL,
+	        orphanRemoval = true
+	    )
+	private List<PicManagement> picManagement;
 	
 	
 	
@@ -96,6 +105,24 @@ public class User {
 	}
 	public void setFace(byte[] face) {
 		this.face = face;
+	}
+	public String getUserid() {
+		return userid;
+	}
+	public void setUserid(String userid) {
+		this.userid = userid;
+	}
+	public List<Event> getEvents() {
+		return events;
+	}
+	public void setEvents(List<Event> events) {
+		this.events = events;
+	}
+	public List<PicManagement> getPicManagement() {
+		return picManagement;
+	}
+	public void setPicManagement(List<PicManagement> picManagement) {
+		this.picManagement = picManagement;
 	}
 
 	

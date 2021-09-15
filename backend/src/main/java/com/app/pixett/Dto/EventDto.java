@@ -21,7 +21,7 @@ public class EventDto implements Serializable{
 	private Date endDate;
 	private List<UserDto> assistants;
 	private String title;
-	private User CreatorId;
+	private UserDto creator;
 	public String getEventId() {
 		return eventId;
 	}
@@ -80,11 +80,11 @@ public class EventDto implements Serializable{
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public User getCreatorId() {
-		return CreatorId;
+	public UserDto getCreator() {
+		return creator;
 	}
-	public void setCreatorId(User creatorId) {
-		CreatorId = creatorId;
+	public void setCreator(UserDto creator) {
+		this.creator = creator;
 	}
 	
 	

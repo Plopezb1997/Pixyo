@@ -65,4 +65,14 @@ public class UserServiceImpl implements UserService{
 		return this.userRepository.findAll(spec);
 	}
 
+	@Override
+	public User update(User user) {
+		User storedUser = findUser(user);
+		if(storedUser!=null) {
+			this.userRepository.save(user);
+			return user;
+		}
+		return null;
+	}
+
 }

@@ -1,6 +1,7 @@
 package com.app.pixett.specification;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -8,6 +9,9 @@ import javax.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.app.pixett.entities.Event;
+import com.app.pixett.entities.Event_;
+import com.app.pixett.entities.User;
+import com.app.pixett.entities.User_;
 import com.app.pixett.filter.EventFilter;
 import com.nimbusds.oauth2.sdk.util.StringUtils;
 
@@ -27,7 +31,7 @@ public class EventSpecification implements Specification<Event>{
 	private final String END_DATE = "endDate";
 	private final String ASSISTANTS = "assistants";
 	private final String TITLE = "title";
-	private final String CREATOR_ID = "CreatorId";
+	private final String CREATOR = "creator";
 	protected EventFilter  filter;
 
 
@@ -54,7 +58,7 @@ public class EventSpecification implements Specification<Event>{
 		addAssistantsExpression(root, criteriaBuilder, predicate);
 		addTitleExpression(root, criteriaBuilder, predicate);
 		addCreatorIdExpression(root, criteriaBuilder, predicate);
-		return null;
+		return predicate;
 	}
 	
 	protected void addEventIdExpression(Root<Event> root, CriteriaBuilder criteriaBuilder, Predicate predicate) {
@@ -72,6 +76,8 @@ public class EventSpecification implements Specification<Event>{
 	protected void addStatusExpression(Root<Event> root, CriteriaBuilder criteriaBuilder, Predicate predicate) {
 		if (StringUtils.isNotBlank(filter.getStatus())){
             predicate.getExpressions().add(criteriaBuilder.and(criteriaBuilder.equal(root.get(STATUS), filter.getStatus())));
+        }else if(filter.getStatusIn()!=null&&!filter.getStatusIn().isEmpty()) {
+        	predicate.getExpressions().add(criteriaBuilder.and(root.get(STATUS).in(filter.getStatusIn())));
         }
 	}
 	
@@ -122,23 +128,23 @@ public class EventSpecification implements Specification<Event>{
 	}
 	
 	protected void addAssistantsExpression(Root<Event> root, CriteriaBuilder criteriaBuilder, Predicate predicate) {
-		//TODO
-		/*if (StringUtils.isNotBlank(filter.getEventId())){
-            predicate.getExpressions().add(criteriaBuilder.and(criteriaBuilder.equal(root.get(ASSISTANTS), filter.getEventId())));
-        }*/
-	}
-	
-	protected void addTitleExpression(Root<Event> root, CriteriaBuilder criteriaBuilder, Predicate predicate) {
-		if (StringUtils.isNotBlank(filter.getTitle())){
-            predicate.getExpressions().add(criteriaBuilder.and(criteriaBuilder.equal(root.get(TITLE), filter.getTitle())));
+		if (filter.getAssistantsInEvents()!=null&&!filter.getAssistantsInEvents().isEmpty()){
+			//Root<User> userRoot = predicate.f
+			//predicate.getExpressions().add(criteriaBuilder.and(root.get(Event_.ASSISTANTS).in(filter.getAssistantsInEvents())));
         }
 	}
 	
-	protected void addCreatorIdExpression(Root<Event> root, CriteriaBuilder criteriaBuilder, Predicate predicate) {
+	protected void addTitleExpression(Root<Event> root, CriteriaBuilder criteriaBuilder, Predicate predicate) {
 		//TODO
-		/*if (StringUtils.isNotBlank(filter.getEventId())){
-            predicate.getExpressions().add(criteriaBuilder.and(criteriaBuilder.equal(root.get(CREATOR_ID), filter.getEventId())));
+		/*if (StringUtils.isNotBlank(filter.getTitle())){
+            predicate.getExpressions().add(criteriaBuilder.and(criteriaBuilder.equal(root.get(TITLE), filter.getTitle())));
         }*/
+	}
+	
+	protected void addCreatorIdExpression(Root<Event> root, CriteriaBuilder criteriaBuilder, Predicate predicate) {
+		if (filter.getCreator()!=null){
+            predicate.getExpressions().add(criteriaBuilder.and(criteriaBuilder.equal(root.get(CREATOR), filter.getCreator())));
+        }
 	}
 
 }

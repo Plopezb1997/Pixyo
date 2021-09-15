@@ -16,5 +16,7 @@ public interface EventService {
 	
 	public List<Event> findEvents(EventSpecification spec);
 	
-	public boolean saveEvent(Event event);
+	public Event saveEvent(Event event);
+
+	public List<Event> findJoinedEvents(EventSpecification eventSpecification);
 }

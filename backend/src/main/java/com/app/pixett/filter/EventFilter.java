@@ -15,6 +15,7 @@ public class EventFilter implements Serializable{
 	private String eventId;
 	private String name;
 	private String status;
+	private List<String> statusIn;
 	private String location;
 	private String eventCode;
 	private Date startDateeq;
@@ -25,7 +26,7 @@ public class EventFilter implements Serializable{
 	private Date endDatele;
 	private List<User> assistantsInEvents;
 	private String title;
-	private User CreatorId;
+	private User creator;
 	public String getEventId() {
 		return eventId;
 	}
@@ -62,11 +63,11 @@ public class EventFilter implements Serializable{
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public User getCreatorId() {
-		return CreatorId;
+	public User getCreator() {
+		return creator;
 	}
-	public void setCreatorId(User creatorId) {
-		CreatorId = creatorId;
+	public void setCreator(User creatorId) {
+		creator = creatorId;
 	}
 	public Date getStartDateeq() {
 		return startDateeq;
@@ -115,6 +116,12 @@ public class EventFilter implements Serializable{
 	}
 	public void setAssistantsInEvents(List<User> assistantsInEvents) {
 		this.assistantsInEvents = assistantsInEvents;
+	}
+	public List<String> getStatusIn() {
+		return statusIn;
+	}
+	public void setStatusIn(List<String> statusIn) {
+		this.statusIn = statusIn;
 	}
 
 
