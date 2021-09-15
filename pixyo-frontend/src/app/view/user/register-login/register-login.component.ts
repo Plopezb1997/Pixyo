@@ -135,8 +135,8 @@ export class RegisterLoginComponent implements OnInit {
     };
     let image;
     let imageData = await this.camera.getPicture(options);
-    //window['plugins'].Base64.encodeFile(imageData, this.withBase64);
-    window['resolveLocalFileSystemURL'](imageData, this.resolveLocalFileSystemURL,this.errorHandling);
+    window['plugins'].Base64.encodeFile(imageData, this.withBase64);
+    //window['resolveLocalFileSystemURL'](imageData, this.resolveLocalFileSystemURL,this.errorHandling);
     //let fileEntry:FileEntry = await this.file.resolveLocalFilesystemUrl(imageData);
     //fileEntry.getMetadata( );
     setInterval(()=>{
