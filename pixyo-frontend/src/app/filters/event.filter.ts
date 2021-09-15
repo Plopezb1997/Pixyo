@@ -6,6 +6,7 @@ export class EventFilter extends Filter{
     eventId: number;
     name: string;
     status: string;
+    statusIn: string[];
     location: string;
     eventCode: string;
     startDateeq: Date;

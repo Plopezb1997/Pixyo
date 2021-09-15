@@ -9,7 +9,7 @@ import { KeyEventComponent } from './view/event/key-event/key-event.component';
 import { NewEventComponent } from './view/event/new-event/new-event.component';
 import { PhotoUploadedComponent } from './view/event/photo-uploaded/photo-uploaded.component';
 //import { RegisterLoginComponent } from './view/event/register-login/register-login.component';
-import { ShareEventComponent } from './view/event/share-event/share-event.component';
+//import { ShareEventComponent } from './view/event/share-event/share-event.component';
 //import { UploadPicComponent } from './view/event/upload-pic/upload-pic.component';
 import { RegisterLoginComponent } from './view/user/register-login/register-login.component';
 import { UploadPicComponent } from './view/user/upload-pic/upload-pic.component';
@@ -17,7 +17,7 @@ import { UploadPicComponent } from './view/user/upload-pic/upload-pic.component'
 const routes: Routes = [
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    loadChildren: () => import('./view/home/home.module').then( m => m.HomePageModule)
   },
   {
     path: '',
@@ -29,7 +29,7 @@ const routes: Routes = [
     pathMatch: 'full',
     component: JoinEventComponent,
     data:Event,
-    canActivate: [AuthGuardService] 
+    //canActivate: [AuthGuardService] 
   },
   {
     path: 'register',
@@ -38,38 +38,38 @@ const routes: Routes = [
     data:Event
   },
   {
-    path: 'editEvent',
+    path: 'editEvent/:id',
     pathMatch: 'full',
     component: EditEventComponent,
     data:Event,
-    canActivate: [AuthGuardService] 
+    //canActivate: [AuthGuardService] 
   },
   {
     path: 'newEvent',
     pathMatch: 'full',
     component: NewEventComponent,
-    canActivate: [AuthGuardService] 
+    //canActivate: [AuthGuardService] 
   },
   {
     path: 'keyEvent',
     pathMatch: 'full',
     component: KeyEventComponent,
-    canActivate: [AuthGuardService] 
+    //canActivate: [AuthGuardService] 
   },
   {
     path: 'homeEvent',
     pathMatch: 'full',
     component: HomeEventComponent,
     data:User,
-    canActivate: [AuthGuardService] 
+    //canActivate: [AuthGuardService] 
   },
-  {
+ /* {
     path: 'shareEvent',
     pathMatch: 'full',
     component: ShareEventComponent,
     data:User,
-    canActivate: [AuthGuardService] 
-  },
+    //canActivate: [AuthGuardService] 
+  },*/
   {
     path: 'uploadPic',
     pathMatch: 'full',
@@ -81,7 +81,7 @@ const routes: Routes = [
     pathMatch: 'full',
     component: PhotoUploadedComponent,
     data:User,
-    canActivate: [AuthGuardService] 
+    //canActivate: [AuthGuardService] 
   }
 ];
 

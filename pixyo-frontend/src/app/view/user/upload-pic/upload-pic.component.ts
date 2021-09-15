@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/entities/User';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/core/auth.service';
 
 @Component({
   selector: 'app-upload-pic',

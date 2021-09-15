@@ -1,7 +1,8 @@
 {
   "name": "pixyo-frontend",
+  "type": "angular",
   "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular"
+    "cordova": {}
+    
+  }
 }

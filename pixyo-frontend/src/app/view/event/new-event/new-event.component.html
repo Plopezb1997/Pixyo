@@ -1,31 +1,32 @@
-
 <ion-content padding>
   <div class="background">
-  <div class="principal">
-    
-    <h4>
-      <b>Cool! Tell us more about this event</b>
-</h4>
-    <ion-list class="formulario">
-      <div>
-      <ion-item>
-        
-        <ion-input class="inputr" type="text" placeholder="Name of event"></ion-input>
-      </ion-item>
+    <div class="principal">
+
+      <h4>
+        <b>Cool! Tell us more about this event</b>
+      </h4>
+      <ion-list class="formulario">
+        <div>
+          <ion-item>
+
+            <ion-input class="inputr" type="text" placeholder="Name of event" [(ngModel)]="event.name"></ion-input>
+          </ion-item>
+        </div>
+        <ion-item>
+
+          <ion-datetime displayFormat="DD de MMM de YYYY a las HH:mm" pickerFormat="DD MMMM YYYY HH mm" class="inputr" type="starts"
+            placeholder="Date and time it starts" [(ngModel)]="event.startDate"></ion-datetime>
+        </ion-item>
+        <ion-item>
+
+          <ion-datetime displayFormat="DD de MMM de YYYY hasta las HH:mm" pickerFormat="DD MMMM YYYY HH mm" type="ends"
+            placeholder="Date and time it ends" [(ngModel)]="event.endDate"></ion-datetime>
+
+        </ion-item>
+
+        <button ion-button block (click)="createEvent()">Create event</button>
+
+      </ion-list>
     </div>
-      <ion-item>
-        
-        <ion-input  class="inputr" type="starts" placeholder="Date and time it starts"></ion-input>
-      </ion-item>
-      <ion-item>
-        
-        <ion-input class="inputr" type="ends" placeholder="Date and time it ends" ></ion-input>
-        
-      </ion-item>
-      
-      <button ion-button block (click)="createEvent()">Create event</button>
-      
-    </ion-list>
   </div>
-</div>
 </ion-content>

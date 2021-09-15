@@ -10,12 +10,12 @@
       <div>
       <ion-item>
         
-        <ion-input class="inputr" type="text" placeholder="e.g., AH46DN2S"></ion-input>
+        <ion-input class="inputr" type="text" placeholder="e.g., AH46DN2S" [(ngModel)]="eventCode"></ion-input>
       </ion-item>
     </div>
       
       
-      <button ion-button block>Join event</button>
+      <button ion-button block (click)="joinEvent()">Join event</button>
       
         <p>The event code is shared by the event organizer (i.e., the person who created the event in Pixyo). </p>
     </ion-list>

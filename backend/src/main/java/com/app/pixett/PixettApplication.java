@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication(scanBasePackages={
 "com.app.pixett"}
-//,exclude = {SecurityAutoConfiguration.class }
+,exclude = {SecurityAutoConfiguration.class }
 )
 @EntityScan(basePackages = { "com.app.pixett.entities" })
 public class PixettApplication {

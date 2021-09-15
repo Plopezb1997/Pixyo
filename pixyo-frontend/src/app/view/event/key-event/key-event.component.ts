@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { VariablesService } from 'src/app/services/core/variables.service';
 
 @Component({
   selector: 'app-key-event',
@@ -6,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./key-event.component.scss'],
 })
 export class KeyEventComponent implements OnInit {
-
-  constructor() { }
+  code:string = localStorage.getItem('currentEvent');
+  constructor(public variablesService: VariablesService,
+    private router: Router) { }
 
   ngOnInit() {}
 
+  copyCode(){
+    this.variablesService.cordova.plugins.clipboard.copy(this.code);
+    window['plugins'].toast.showShortBottom('Código copiado');
+    this.router.navigate(['/homeEvent']);
+  }
 }

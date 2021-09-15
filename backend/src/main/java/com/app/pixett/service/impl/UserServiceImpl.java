@@ -2,6 +2,7 @@ package com.app.pixett.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,15 +20,16 @@ import com.app.pixett.specification.UserSpecification;
 
 @Service
 public class UserServiceImpl implements UserService{
-	@Autowired
-	PasswordEncoder passwordEncoder;
+	/*@Autowired
+	PasswordEncoder passwordEncoder;*/
 	
 	@Autowired
 	private UserRepository userRepository;
 	
 	public User findUser(User user){
-		User userFound = userRepository.findByPhoneNumberAndPassword(user.getPhoneNumber(), passwordEncoder.encode(user.getPassword()));
-		return userFound;
+		//User userFound = userRepository.findByPhoneNumberAndPassword(user.getPhoneNumber(), passwordEncoder.encode(user.getPassword()));
+		Optional<User> userFound = userRepository.findById(user.getUserId());
+		return userFound.isPresent()?userFound.get():null;
 	}
 	
 	public User findPhone(String phone) {
@@ -36,7 +38,8 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	public User register(User user){
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		//user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setPassword("");
 		return this.userRepository.save(user);
 	}
 

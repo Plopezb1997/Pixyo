@@ -2,7 +2,7 @@ export class User {
     userId: number;
     name: string;
     password: string;
-    face: string;
+    face: HTMLImageElement;
     phoneNumber: string;
     email: string;
     sharedPics: number;

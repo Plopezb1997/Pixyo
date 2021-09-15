@@ -1,6 +1,6 @@
 import { User } from './User';
 
-export class Event {
+export class EventObject {
     eventId: number;
     name: string;
     status: string;
@@ -9,4 +9,5 @@ export class Event {
     startDate: Date;
     endDate: Date;
     creator: User;
+    assistants:User[];
 }

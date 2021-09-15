@@ -31,8 +31,8 @@ import com.app.pixett.service.UserService;
 @CrossOrigin
 @RequestMapping(value = "/auth")
 public class AuthController {
-	@Autowired
-	AuthenticationManager authenticationManager;
+	/*@Autowired
+	AuthenticationManager authenticationManager;*/
 	
 	@Autowired
 	UserService userService;
@@ -40,17 +40,17 @@ public class AuthController {
 	@Autowired
 	ModelMapper modelMapper;
 	
-	@Autowired
+	//@Autowired
 	JwtUtils jwtUtils;
 	
-	@Autowired
-	PasswordEncoder encoder;
+	/*@Autowired
+	PasswordEncoder encoder;*/
 	
-	@CrossOrigin
+	//@CrossOrigin
 	@PostMapping("/user/login")
 	public ResponseEntity<JwtResponse> findUser(@RequestBody UserDto user){
-		Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getPhoneNumber(), user.getPassword()));
-		SecurityContextHolder.getContext().setAuthentication(auth);
+		//Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getPhoneNumber(), user.getPassword()));
+		/*SecurityContextHolder.getContext().setAuthentication(auth);
 		//String jwt = 
 		String jwt = jwtUtils.generateJwtToken(auth);
 		
@@ -63,16 +63,17 @@ public class AuthController {
 												 userDetails.getId(), 
 												 userDetails.getUsername(), 
 												 userDetails.getEmail(), 
-												 roles));
+												 roles));*/
 		/*User userFound = userService.findUser(modelMapper.map(user, User.class));
 		if(userFound!=null) {
 			return new ResponseEntity<>(modelMapper.map(userFound, UserDto.class), HttpStatus.OK);
 		}
 		return new ResponseEntity<>(
 				HttpStatus.NOT_FOUND);*/
+		return null;
 	}
 	
-	@CrossOrigin
+	//@CrossOrigin
 	@PostMapping("/user/register")
 	public ResponseEntity<UserDto> register(@RequestBody UserDto user){
 		User userFound = userService.register(modelMapper.map(user, User.class));
@@ -83,7 +84,7 @@ public class AuthController {
 				HttpStatus.NOT_FOUND);
 	}
 	
-	@CrossOrigin
+	//@CrossOrigin
 	@GetMapping("/user/phoneNumberExists/{phone}")
 	public ResponseEntity<Boolean> findPhone(@PathVariable String phone){
 		User userFound = userService.findPhone(phone);
