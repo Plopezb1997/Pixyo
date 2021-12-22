@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
+import { Assistant } from 'src/app/entities/Assistant';
 import { EventObject } from 'src/app/entities/Event';
 import { User } from 'src/app/entities/User';
 import { EventFilter } from 'src/app/filters/event.filter';
@@ -31,15 +32,20 @@ export class JoinEventComponent implements OnInit {
       if (!!events && !!events[0]) {
         let event: EventObject = events[0];
         let userObj: User = JSON.parse(user);
-        let inEvent: boolean = event.creator.userId == userObj.userId;
+        let inEvent: boolean = false;
         let i = 0;
         if (!!event.assistants) {
           while (!inEvent && i < event.assistants.length) {
-            inEvent = event.assistants[i].userId!==userObj.userId;
+            //inEvent = event.assistants[i].id.userid!==userObj.userId;
+            inEvent = event.assistants[i].userid!==userObj.userId;
           }
         }
         if (!inEvent) {
-          event.assistants.push(userObj);
+          let assistant:Assistant = new Assistant(event.eventId, event.creator.userId);
+          assistant.lastScan = event.startDate;
+          event.assistants.push(assistant);
+          await this.eventService.saveAssistants(event.assistants).toPromise();
+          //event.assistants.push(userObj);
           let eventSaved:EventObject = await this.eventService.save(event).toPromise();
           console.log(event.eventId);
           console.log(eventSaved.eventId);
@@ -50,6 +56,8 @@ export class JoinEventComponent implements OnInit {
           this.router.navigate(['/homeEvent']);
         }
 
+      }else{
+        window['plugins'].toast.showLongBottom('Código de evento no válido');
       }
     }
 

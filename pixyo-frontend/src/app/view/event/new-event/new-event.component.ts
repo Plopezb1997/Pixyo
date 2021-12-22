@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
+import { Assistant } from 'src/app/entities/Assistant';
 import { EventObject } from 'src/app/entities/Event';
 import { EventService } from 'src/app/services/event.service';
 import { UtilService } from 'src/app/services/util.service';
@@ -28,7 +29,12 @@ export class NewEventComponent implements OnInit {
         this.event.creator = JSON.parse(user);
         //TODO FIX PARA INTERNACIONAL
         this.event.status = this.utilService.dateBefore(new Date(), this.event.endDate)&&this.utilService.dateBefore(this.event.startDate, new Date())?'A':'C';
-        let event: EventObject = await this.eventService.save(this.event).toPromise()
+        this.event.assistants =[];
+        let event: EventObject = await this.eventService.save(this.event).toPromise();
+        let assistant:Assistant = new Assistant(event.eventId, event.creator.userId);
+        assistant.lastScan = event.startDate;
+        event.assistants.push(assistant);
+        await this.eventService.saveAssistants(event.assistants).toPromise();
         localStorage.setItem('currentEvent', event.eventCode);
         this.router.navigate(['/keyEvent']);
       }
@@ -44,12 +50,18 @@ export class NewEventComponent implements OnInit {
       window['plugins'].toast.showShortBottom('Todos los campos son obligatorios, por favor, rellénelos');
       return false;
     }
+    if((typeof this.event.startDate)=='string'){
+      this.event.startDate = new Date(this.event.startDate);
+    }
+    if((typeof this.event.endDate)=='string'){
+      this.event.endDate = new Date(this.event.endDate);
+    }
     valid = this.utilService.dateBefore(this.event.startDate, this.event.endDate);
     if (!valid) {
       window['plugins'].toast.showShortBottom('La fecha y hora de fin no puede ser anterior a la de inicio');
       return false;
     }
-    valid = this.utilService.dateBefore(this.event.endDate, new Date());
+    valid = !this.utilService.dateBefore(this.event.endDate, new Date());
     if (!valid) {
       window['plugins'].toast.showShortBottom('Aún no se ha implementado la funcionalidad para eventos terminados, estate atento ;)');
       return false;

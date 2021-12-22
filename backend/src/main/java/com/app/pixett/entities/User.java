@@ -1,15 +1,15 @@
 package com.app.pixett.entities;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -40,16 +40,17 @@ public class User {
 	@Lob
     @Column
 	private byte[] face;
-	@ManyToMany(mappedBy = "assistants")
-	private List<Event> events;
 	
 	@OneToMany(
-	        mappedBy = "user",
+	        mappedBy = "userPicMgmt",
 	        cascade = CascadeType.ALL,
-	        orphanRemoval = true
+	        orphanRemoval = true,
+	        fetch = FetchType.LAZY
 	    )
-	private List<PicManagement> picManagement;
+	private Set<PicManagement> picManagement;
 	
+	@OneToMany(mappedBy = "eventAssistantRef")
+	private Set<Assistant> assistants;
 	
 	
 	public String getUserId() {
@@ -112,17 +113,17 @@ public class User {
 	public void setUserid(String userid) {
 		this.userid = userid;
 	}
-	public List<Event> getEvents() {
-		return events;
-	}
-	public void setEvents(List<Event> events) {
-		this.events = events;
-	}
-	public List<PicManagement> getPicManagement() {
+	public Set<PicManagement> getPicManagement() {
 		return picManagement;
 	}
-	public void setPicManagement(List<PicManagement> picManagement) {
+	public void setPicManagement(Set<PicManagement> picManagement) {
 		this.picManagement = picManagement;
+	}
+	public Set<Assistant> getAssistants() {
+		return assistants;
+	}
+	public void setAssistants(Set<Assistant> assistants) {
+		this.assistants = assistants;
 	}
 
 	

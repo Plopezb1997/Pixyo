@@ -33,25 +33,12 @@
         </ion-item>
 
       </ion-list>
-      <ion-item>
-        My events
-        <ion-item *ngFor="event in events">
-          <event-resumed event="event"></event-resumed>
-        </ion-item>
-      </ion-item>
+      <div *ngIf="events" >
+        <p style="padding-left: 5%;">My events</p>
+          <event-resumed *ngFor="let event of events" [event]="event"></event-resumed>
+      </div>
 
 
     </div>
-  </div>
-
-  <div class="background">
-    <ion-item>
-      My events
-      <div *ngFor="event in events">
-        <ion-item>
-          <event-resumed event="event"></event-resumed>
-        </ion-item>
-      </div>
-    </ion-item>
   </div>
 </ion-content>

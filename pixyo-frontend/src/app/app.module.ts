@@ -27,10 +27,13 @@ import { PhotoLibrary } from '@ionic-native/photo-library/ngx';
 import { Device } from '@ionic-native/device';
 import { VariablesService } from './services/core/variables.service';
 import { UtilService } from './services/util.service';
+import { EventResumedComponent } from './view/event/event-resumed/event-resumed.component';
+import { CommonModule } from '@angular/common';
 @NgModule({
-  declarations: [AppComponent, RegisterLoginComponent, UploadPicComponent, HomeEventComponent, NewEventComponent, ShowErrorsComponent],
+  declarations: [AppComponent, RegisterLoginComponent, UploadPicComponent, HomeEventComponent, NewEventComponent, ShowErrorsComponent, EventResumedComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, HttpClientModule, ReactiveFormsModule, TranslateModule.forRoot(),
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, HttpClientModule, ReactiveFormsModule, TranslateModule.forRoot(),CommonModule
+    
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, AuthService, AndroidService, AndroidPermissions, Platform, HTTP, Camera, File, PhotoLibrary,//, AuthGuardService
     authInterceptorProviders,

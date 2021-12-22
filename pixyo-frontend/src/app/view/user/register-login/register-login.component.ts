@@ -27,6 +27,8 @@ export class RegisterLoginComponent implements OnInit {
   hasPic: boolean = false;
   existsNumber: boolean = null;
   formlogin: FormGroup;
+  faces: [];
+  facePics = [];
 
   constructor(private cd: ChangeDetectorRef,
     private authservice: AuthService,
@@ -44,7 +46,7 @@ export class RegisterLoginComponent implements OnInit {
   ngOnInit() {
     window['user'] = this.user;
     window['hasPic'] = this.hasPic;
-    
+    window['facePics'] = this.facePics;
    }
 
   switchMode() {
@@ -154,6 +156,7 @@ export class RegisterLoginComponent implements OnInit {
     console.log('file base64 encoding: ' + base64);
     window['user'].face = base64;
     window['hasPic'] = true;
+    window['facePics'].push(base64);
     console.log('END withBase64');
   }
 

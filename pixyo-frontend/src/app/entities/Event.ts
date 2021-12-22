@@ -1,7 +1,8 @@
+import { Assistant } from './Assistant';
 import { User } from './User';
 
 export class EventObject {
-    eventId: number;
+    eventId: string;
     name: string;
     status: string;
     location: string;
@@ -9,5 +10,5 @@ export class EventObject {
     startDate: Date;
     endDate: Date;
     creator: User;
-    assistants:User[];
+    assistants:Assistant[];
 }

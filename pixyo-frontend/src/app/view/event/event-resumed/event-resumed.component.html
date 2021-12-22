@@ -1,7 +1,10 @@
-<ion-content padding>
-  <ion-list class="formulario">
-    <ion-item>{{event.name}}</ion-item>
-    <ion-item>{{event.startDate}} - {{event.endDate}}</ion-item>
-    <ion-item>{{event.creator.name}}</ion-item>
-  </ion-list>
-</ion-content>
+<ion-list class="formulario">
+  <div class="eventProperties">
+    <div class="eventName">{{event.name}}</div>
+    <div class="eventDetail">{{event.startDate|date:'cccc dd @ HH'}} - {{event.endDate|date:'cccc dd @ HH'}}</div>
+    <div class="eventDetail">Organizer: {{event.creator.name}}</div>
+    
+  </div>
+  <i class="fa fa-pencil editPencil"></i>
+</ion-list>
+<hr class="linea">

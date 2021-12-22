@@ -22,16 +22,24 @@ export class HomePage implements OnInit {
           this.nativeStorage.getItem('user')
             .then(
               (result) => {
-                if (result) {
+                /*if (result) {
                   console.log('Stored user' + JSON.stringify(result));
                   this.router.navigate(['/homeEvent']);
-                }else{
+                }else*/{
                   console.log('New user');
                   this.router.navigate(['/register']);
                 }
               },
-              error => console.error('Error storing user', error)
-            );
+              error => {
+                console.error('Error storing user', error)
+                if(error.code ==2){
+                  this.router.navigate(['/register']);
+                }
+              }
+            ).catch(error=>{
+              console.log('New user');
+                  this.router.navigate(['/register']);
+            });
         }else{
           this.router.navigate(['/register']);
         }

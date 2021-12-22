@@ -28,6 +28,7 @@
     "@ionic-native/file": "^5.36.0",
     "@ionic-native/file-path": "^5.36.0",
     "@ionic-native/http": "^5.35.0",
+    "@ionic-native/media-capture": "^5.36.0",
     "@ionic-native/native-storage": "^5.35.0",
     "@ionic-native/photo-library": "^5.36.0",
     "@ionic-native/toast": "^5.36.0",
@@ -35,6 +36,7 @@
     "@ionic/storage": "^3.0.6",
     "@ngx-translate/core": "^13.0.0",
     "cordova-android": "9.1.0",
+    "face-api.js": "^0.22.2",
     "jquery": "^3.6.0",
     "jquery-ui": "^1.12.1",
     "ngx-translate": "^0.0.1-security",
@@ -71,6 +73,7 @@
     "cordova-plugin-filepath": "^1.6.0",
     "cordova-plugin-ionic-keyboard": "^2.0.5",
     "cordova-plugin-ionic-webview": "^4.0.0",
+    "cordova-plugin-media-capture": "^3.0.3",
     "cordova-plugin-nativestorage": "^2.3.2",
     "cordova-plugin-photo-library": "^2.3.1",
     "cordova-plugin-splashscreen": "5.0.2",
@@ -121,7 +124,8 @@
       "cordova-plugin-photo-library": {},
       "com-badrit-base64": {},
       "cordova-clipboard": {},
-      "cordova-plugin-x-toast": {}
+      "cordova-plugin-x-toast": {},
+      "cordova-plugin-media-capture": {}
     },
     "platforms": [
       "android"

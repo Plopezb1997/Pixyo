@@ -3,6 +3,7 @@ package com.app.pixett.service.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import javax.persistence.EntityManager;
@@ -15,10 +16,14 @@ import javax.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.app.pixett.entities.Assistant;
+import com.app.pixett.entities.Assistant_;
+import com.app.pixett.entities.AssistantsID;
 import com.app.pixett.entities.Event;
 import com.app.pixett.entities.User;
 import com.app.pixett.entities.User_;
 import com.app.pixett.filter.EventFilter;
+import com.app.pixett.repository.AssistantRepository;
 import com.app.pixett.repository.EventRepository;
 import com.app.pixett.service.EventService;
 import com.app.pixett.specification.EventSpecification;
@@ -27,6 +32,9 @@ import com.app.pixett.specification.EventSpecification;
 public class EventServiceImpl implements EventService {
 	@Autowired
 	EventRepository eventRepository;
+	
+	@Autowired
+	AssistantRepository assistantRepository;
 
 	@PersistenceContext
 	EntityManager entityManager;
@@ -43,9 +51,17 @@ public class EventServiceImpl implements EventService {
 		if (event.getEventCode() == null) {
 			newEvent(event);
 		}
+		
 		if (this.eventRepository.save(event) != null) {
+			/*if(event.getAssistants()!=null) {
+				for (Assistant assistant : event.getAssistants()) {
+					assistant.setId(new AssistantsID(event.getEventId(), assistant.getId().getUserid()));
+				}
+				assistantRepository.saveAll(event.getAssistants());
+			}*/
 			return event;
 		}
+		
 		return null;
 
 	}
@@ -79,8 +95,8 @@ public class EventServiceImpl implements EventService {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Event> criteriaQuery = criteriaBuilder.createQuery(Event.class);
 		Root<Event> rootEvent = criteriaQuery.from(Event.class);
-		Root<User> rootUser = criteriaQuery.from(User.class);
-		Expression<Collection<Event>> userEvents = rootUser.get(User_.EVENTS);
+		Root<Assistant> rootUser = criteriaQuery.from(Assistant.class);
+		Expression<Collection<Event>> userEvents = rootUser.get(Assistant_.EVENT_ASSISTANT_REF);
 		List<String> userIds = new ArrayList<>();
 		for (User user : eventSpecification.getFilter().getAssistantsInEvents()) {
 			userIds.add(user.getUserId());
@@ -88,8 +104,7 @@ public class EventServiceImpl implements EventService {
 		// criteriaBuilder.and(rootUser.get(User_.userid).in( userIds),
 		// criteriaBuilder.isMember(rootEvent, userEvents));
 		criteriaQuery.distinct(true);
-		criteriaQuery.where(criteriaBuilder.or(rootUser.get(User_.userid).in(userIds),
-				criteriaBuilder.isMember(rootEvent, userEvents)));
+		criteriaQuery.where(criteriaBuilder.or(rootUser.get(Assistant_.USER_REF).in(eventSpecification.getFilter().getAssistantsInEvents())));
 		eventSpecification.toPredicate(rootEvent, criteriaQuery, criteriaBuilder);
 		List<Event> events = this.eventRepository.findAll(eventSpecification);
 		/*
@@ -99,5 +114,19 @@ public class EventServiceImpl implements EventService {
 		 */
 
 		return events;
+	}
+
+	@Override
+	public List<Assistant> findAssistantsByEventId(String eventId) {
+		Optional<Event> result = eventRepository.findById(eventId);
+		if(result.isPresent()) {
+			return result.get().getAssistants();
+		}
+		return null;
+	}
+
+	@Override
+	public Assistant saveAssistants(Assistant assistant) {
+		return this.assistantRepository.save(assistant);
 	}
 }

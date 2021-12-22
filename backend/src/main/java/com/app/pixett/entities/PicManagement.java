@@ -21,7 +21,7 @@ public class PicManagement {
 
 	@ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userid")
-    private User user;
+    private User userPicMgmt;
 	
 	@Column
 	private boolean appears;
@@ -46,11 +46,11 @@ public class PicManagement {
 	}
 
 	public User getUserid() {
-		return user;
+		return userPicMgmt;
 	}
 
 	public void setUserid(User userid) {
-		this.user = userid;
+		this.userPicMgmt = userid;
 	}
 
 	public boolean isAppears() {

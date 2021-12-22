@@ -1,0 +1,31 @@
+.eventDetail{
+    --border-style: solid;
+    padding-left: 5%;
+    color: grey;
+    font-size: 12px;
+}
+.eventName{
+font-size: 16px;
+font-weight: bold;
+padding-left: 5%;
+}
+
+.eventProperties{
+    width: 80%;
+    float:left;
+    padding-left: 5%;
+}
+
+.editPencil{
+    width: 20%;
+    vertical-align: middle;
+    font-size: 3em;
+    color: #c6c3c3;
+}
+
+.linea{
+    height: 1px;
+    border-width: 1px;
+    box-sizing: content-box;
+    width: 95%;
+}

@@ -9,9 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -35,15 +34,19 @@ public class Event {
 	private Date startDate;
 	@Column
 	private Date endDate;
-	@ManyToMany
-	@JoinTable(
-			  name = "assistants", 
-			  joinColumns = @JoinColumn(name = "Eventid"),
-			  inverseJoinColumns = @JoinColumn(name="userid", nullable = false))
-	private List<User> assistants;
+	/*@Column
+	private String creator;*/
+	
+	
+	@OneToMany(mappedBy = "eventAssistantRef")
+	List<Assistant> assistants;
+	
+	
 	@ManyToOne
-	@JoinColumn(name = "creatorid")
+	@JoinColumn(name = "creatorid", insertable = true, updatable = false)
 	private User creator;
+	
+	
 	public String getEventId() {
 		return eventid;
 	}
@@ -86,18 +89,19 @@ public class Event {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-	public List<User> getAssistants() {
-		return assistants;
-	}
-	public void setAssistants(List<User> assistant) {
-		this.assistants = assistant;
-	}
+
 	
-	public User getCreatorId() {
+	public User getCreator() {
 		return creator;
 	}
-	public void setCreatorId(User creatorId) {
+	public void setCreator(User creatorId) {
 		creator = creatorId;
+	}
+	public List<Assistant> getAssistants() {
+		return assistants;
+	}
+	public void setAssistants(List<Assistant> assistants) {
+		this.assistants = assistants;
 	}
 	
 	

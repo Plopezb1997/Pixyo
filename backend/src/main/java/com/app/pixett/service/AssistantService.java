@@ -1,19 +1,14 @@
 package com.app.pixett.service;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.app.pixett.entities.Pic;
-
+import com.app.pixett.entities.Assistant;
 
 @Service
 @Transactional
-public interface PicService {
+public interface AssistantService {
+	public Assistant saveAssistant(Assistant assistant);
 	
-	public List<Pic> findPicsByEventId(String eventId);
 	
-	public Pic saveEvent(Pic pic);
-
 }

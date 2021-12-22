@@ -1,5 +1,6 @@
 package com.app.pixett.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,8 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.pixett.Dto.AssistantDto;
 import com.app.pixett.Dto.EventDto;
+import com.app.pixett.entities.Assistant;
+import com.app.pixett.entities.AssistantsID;
 import com.app.pixett.entities.Event;
+import com.app.pixett.entities.User;
 import com.app.pixett.filter.EventFilter;
 import com.app.pixett.service.EventService;
 import com.app.pixett.specification.EventSpecification;
@@ -75,6 +80,27 @@ public class EventController {
 		return events.stream().map(event->modelMapper.map(event, EventDto.class)).map(Event::getAssistants, EventDto::setAssistants).collect(Collectors.toList());
 		
 	}*/
+	
+	@GetMapping("/findAssistants/{eventId}")
+	public ResponseEntity<List<Assistant>> findAssistantsByEventId(@PathVariable String eventId){
+		return new ResponseEntity<>(eventService.findAssistantsByEventId(eventId), HttpStatus.OK);
+	}
+	
+	@PostMapping("/saveAssistants")
+	public ResponseEntity<List<Assistant>> saveAssistants(@RequestBody List<AssistantDto> assistant){
+		List<Assistant> assistantsEvent = new ArrayList<>();
+		for (AssistantDto assistantDto : assistant) {
+			Assistant assistanParsed = modelMapper.map(assistant, Assistant.class);
+			assistanParsed.setId(new AssistantsID(assistantDto.getEventid(), assistantDto.getUserid()));
+			assistanParsed.setEvent(new Event());
+			assistanParsed.getEvent().setEventId(assistantDto.getEventid());
+			assistanParsed.setUser(new User());
+			assistanParsed.getUser().setUserId(assistantDto.getUserid());
+			Assistant assistantEvent = eventService.saveAssistants(assistanParsed);
+			assistantsEvent.add(assistantEvent);
+		}
+		return new ResponseEntity<>(null, HttpStatus.OK);
+	}
 	
 	
 
