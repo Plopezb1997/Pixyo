@@ -37,7 +37,7 @@ export class JoinEventComponent implements OnInit {
         if (!!event.assistants) {
           while (!inEvent && i < event.assistants.length) {
             //inEvent = event.assistants[i].id.userid!==userObj.userId;
-            inEvent = event.assistants[i].userid!==userObj.userId;
+            inEvent = event.assistants[i].userId!==userObj.userId;
           }
         }
         if (!inEvent) {

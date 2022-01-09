@@ -29,8 +29,12 @@ import { VariablesService } from './services/core/variables.service';
 import { UtilService } from './services/util.service';
 import { EventResumedComponent } from './view/event/event-resumed/event-resumed.component';
 import { CommonModule } from '@angular/common';
+import { TakeFacePicComponent } from './view/user/take-face-pic/take-face-pic.component';
+import { LuxandService } from './services/luxand.service';
+import { CameraService } from './services/camera.service';
+import { FilesService } from './services/files.service';
 @NgModule({
-  declarations: [AppComponent, RegisterLoginComponent, UploadPicComponent, HomeEventComponent, NewEventComponent, ShowErrorsComponent, EventResumedComponent],
+  declarations: [AppComponent, RegisterLoginComponent, UploadPicComponent, HomeEventComponent, NewEventComponent, ShowErrorsComponent, EventResumedComponent, TakeFacePicComponent],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, HttpClientModule, ReactiveFormsModule, TranslateModule.forRoot(),CommonModule
     
@@ -39,7 +43,11 @@ import { CommonModule } from '@angular/common';
     authInterceptorProviders,
     UserService, EventService, NativeStorage,
     VariablesService,
-    UtilService],
+    UtilService,
+    LuxandService,
+    CameraService,
+    FilesService
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

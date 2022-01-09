@@ -13,6 +13,8 @@ import { User } from 'src/app/entities/User';
 import { Assistant } from 'src/app/entities/Assistant';
 import { AssistantService } from 'src/app/services/assistant.service';
 import * as faceapi from 'face-api.js';
+import { FilesService } from 'src/app/services/files.service';
+import { LuxandService } from 'src/app/services/luxand.service';
 @Component({
   selector: 'app-home-event',
   templateUrl: './home-event.component.html',
@@ -29,7 +31,9 @@ export class HomeEventComponent implements OnInit {
     private file: FileNative,
     public utilService: UtilService,
     public picService: PicService,
-    public assistantService: AssistantService) { }
+    public fileService: FilesService,
+    public assistantService: AssistantService,
+    public luxand: LuxandService) { }
   ngOnInit() {
     this.retrieveUserEvents().then(() => {
       this.processEvents();
@@ -79,10 +83,10 @@ export class HomeEventComponent implements OnInit {
       let event = this.events[i];
 
       if (event.status == this.variablesService.STATUS.CREATION) {
-        if (this.utilService.nowBetween(event.startDate, event.endDate)) {
+        if (this.utilService.nowBetween(new Date(event.startDate), new Date(event.endDate))) {
           event.status = this.variablesService.STATUS.ACTIVE;
           this.eventService.save(event);
-        } else if (this.utilService.dateBefore(event.endDate, new Date())) {
+        } else if (this.utilService.dateBefore(new Date(event.endDate), new Date())) {
           event.status = this.variablesService.STATUS.FINISHED;
           this.eventService.save(event);
           this.events.splice(i, 1);
@@ -111,9 +115,9 @@ export class HomeEventComponent implements OnInit {
           await this.comparefiles(picsInPhone, event, picsNotUploaded);
           await this.uploadImages(event, picsNotUploaded);
           //TODO faceapi scan and detect faces
-          /*this.scanImage();
+          this.scanImages(picsNotUploaded);
           this.retrieveImages();
-          this.deleteCloudImages();*/
+          this.deleteCloudImages();
         } else {
           event.status = this.variablesService.STATUS.FINISHED;
           this.eventService.save(event);
@@ -148,13 +152,13 @@ export class HomeEventComponent implements OnInit {
         let assistant: Assistant;
         let user: User = await this.utilService.getUser()
         event.assistants.forEach(assist => {
-          if (assist.userid == user.userId) {
+          if (assist.userId == user.userId) {
             assistant = assist;
           }
         });
         if (assistant) {
           console.log("VICTORIA");
-          let fechaInicio: Date = assistant.lastScan;
+          let fechaInicio: Date = new Date(assistant.lastScan?assistant.lastScan:event.startDate);
           let fechaFin: Date = new Date();
           this.findPicsInStorage(entry, fechaInicio, fechaFin, pics);
           assistant.lastScan = fechaFin;
@@ -218,14 +222,13 @@ export class HomeEventComponent implements OnInit {
       pic = await this.picService.save(pic).toPromise();
     }
   }
-  scanImage(image: string) {
-    let file = new File(image as unknown as BlobPart[], 'pic');
-    //file.lastModified = 
-    let form = new FormData();
-    form.append("name", "");
-    form.append("photo", file, "file");
-    form.append("store", "1");
-    //throw new Error('Method not implemented.');
+  async scanImages(pics: Pic[]) {
+    for(let i =0; i<pics.length;i++){
+      let pic = pics[i];
+      let file = this.fileService.base64toBlob(pic.pic,this.variablesService.picFormat );
+      let result = await this.luxand.recognizePeople(file).toPromise();
+    }
+  
   }
   retrieveImages() {
     /*const path = this.file.documentsDirectory;

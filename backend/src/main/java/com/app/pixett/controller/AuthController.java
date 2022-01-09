@@ -77,7 +77,9 @@ public class AuthController {
 	@PostMapping("/user/register")
 	public ResponseEntity<UserDto> register(@RequestBody UserDto user){
 		User userParsed = modelMapper.map(user, User.class);
-		userParsed.setFace(user.getFace().getBytes());
+		if(user.getFace()!=null) {
+			userParsed.setFace(user.getFace().getBytes());
+		}
 		User userFound = userService.register(userParsed);
 		if(userFound!=null) {
 			return new ResponseEntity<>(modelMapper.map(userFound, UserDto.class), HttpStatus.OK);

@@ -12,7 +12,7 @@ import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 @Entity
-@Table(name ="assistant")
+@Table(name ="assistants")
 public class Assistant{
 	
 	@EmbeddedId

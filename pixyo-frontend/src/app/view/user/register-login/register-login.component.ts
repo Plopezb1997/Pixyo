@@ -15,6 +15,10 @@ import { Device } from '@ionic-native/device';
 import 'jqueryui';*/
 import { VariablesService } from 'src/app/services/core/variables.service';
 import { UtilService } from 'src/app/services/util.service';
+import { LuxandService } from 'src/app/services/luxand.service';
+import { ToastService } from 'src/app/services/toast.service';
+import { FilesService } from 'src/app/services/files.service';
+import { CameraService } from 'src/app/services/camera.service';
 @Component({
   selector: 'app-register-login',
   templateUrl: './register-login.component.html',
@@ -28,7 +32,8 @@ export class RegisterLoginComponent implements OnInit {
   existsNumber: boolean = null;
   formlogin: FormGroup;
   faces: [];
-  facePics = [];
+  facePics = {};
+  enoughPics: boolean = false;
 
   constructor(private cd: ChangeDetectorRef,
     private authservice: AuthService,
@@ -39,7 +44,11 @@ export class RegisterLoginComponent implements OnInit {
     private file: File,
     private photoLibrary: PhotoLibrary,
     public variablesService: VariablesService,
-    public utilService:UtilService
+    public utilService: UtilService,
+    public luxandService: LuxandService,
+    public toast: ToastService,
+    public fileService: FilesService,
+    public cameraService: CameraService
     //private device:Device
   ) { }
 
@@ -47,29 +56,106 @@ export class RegisterLoginComponent implements OnInit {
     window['user'] = this.user;
     window['hasPic'] = this.hasPic;
     window['facePics'] = this.facePics;
-   }
+  }
 
   switchMode() {
     this.isRegister = !this.isRegister;
     //this.cd.detectChanges();
-  } 
+  }
   cameraCallback(imageData) {
     var image = document.getElementById('myImage');
     console.log(image);
     //this.user = "data:image/jpeg;base64," + imageData;
   }
   async register() {
+    let canRegister: boolean = true;
     if (!this.utilService.isEmpty(this.user.name)) {
+      canRegister = canRegister;
+    } else {
+      window['plugins'].toast.showshortBottom('Introduce el nombre');
+      canRegister = false;
+    }
+    await this.checkEnoughPics();
+    if (this.enoughPics) {
+      canRegister = canRegister;
+    } else {
+      canRegister = false;
+    }
+    if (canRegister) {
+      await this.sendToLuxand();
       this.authService.register(this.user).subscribe(result => {
         this.nativeStorage.setItem('user', JSON.stringify(result))
-          .then(
-            () => console.log('Stored user'),
+          .then(()=>this.router.navigate(['/homeEvent']),
             error => console.error('Error storing user', error)
           );
-        this.router.navigate(['/homeEvent']);
+        
       });
-    }else{
-      window['plugins'].toast.showshortBottom('Introduce el nombre');
+    }
+  }
+
+  async sendToLuxand() {
+
+    console.log('Stored user');
+    let entries = await this.fileService.listDirFromRoot('Pixyo/ProfileImages');
+    this.cameraService.readFile(entries[0]);
+
+    setInterval(() => {
+      setTimeout(() => {
+        this.cd.detectChanges();
+        this.hasPic = window['hasPic'];
+        if (this.hasPic) {
+          this.luxandService.createPerson(this.user.name, atob(window['currentPic'])).subscribe(object=>{
+            this.user.luxandid = object['id'];
+            this.secondIteration(object['id']);  
+          });
+          this.hasPic = false;
+          window['hasPic'] = false;
+        }
+      }, 1000)
+    })
+
+
+  }
+  async secondIteration(id:string) {
+    let entries = await this.fileService.listDirFromRoot('Pixyo/ProfileImages');
+    for (let i = 1; i < entries.length; i++) {
+      this.cameraService.readFile(entries[i]);
+      setInterval(() => {
+        setTimeout(() => {
+          this.cd.detectChanges();
+          this.hasPic = window['hasPic'];
+          if (this.hasPic) {
+            this.luxandService.addFaceToPerson(id, atob(window['currentPic'])).subscribe();
+            this.hasPic = false;
+            window['hasPic'] = false;
+          }
+        }, 1000)
+      })
+    }
+  }
+
+  async checkEnoughPics() {
+    let entries = await this.fileService.listDirFromRoot('Pixyo/ProfileImages');
+    if (entries.length < 3) {
+      this.enoughPics = false;
+    } else {
+      for (var face in this.variablesService.registerPics) {
+        let flagExists = false;
+        if (this.variablesService.registerPics[face].demandant) {
+          entries.forEach(entry => {
+            if (entry.name.toLowerCase().split('.jpg')[0] == face) {
+              flagExists = true;
+            }
+          });
+        }else{
+          flagExists=true;
+        }
+        if (!flagExists) {
+          window['plugins'].toast.showshortBottom('Falta la cara ' + face);
+          break;
+        }
+        this.enoughPics = true;
+      }
     }
   }
 
@@ -83,11 +169,11 @@ export class RegisterLoginComponent implements OnInit {
 
   }
 
-  loadPhoto() {
-    if (true) {
-      //this.fromCameraBytes();
-      this.fromCameraUrl();
-    } else {
+  loadPhoto(faceType: string) {
+    //if (true) {
+    //this.fromCameraBytes();
+    this.fromCameraUrl(faceType);
+    /*} else {
       console.log(68);
       this.photoLibrary.getLibrary(
         this.processLibrary,
@@ -101,8 +187,8 @@ export class RegisterLoginComponent implements OnInit {
           maxItems: 1, // limit the number of items to return
         }
       );
-
-    }
+  
+    }*/
   }
 
   private fromCameraBytes() {
@@ -126,7 +212,7 @@ export class RegisterLoginComponent implements OnInit {
     });
   }
 
-  private async fromCameraUrl() {
+  private async fromCameraUrl(faceType) {
     const options: CameraOptions = {
       quality: 95,
       destinationType: this.camera.DestinationType.FILE_URI,
@@ -137,31 +223,39 @@ export class RegisterLoginComponent implements OnInit {
     };
     let image;
     let imageData = await this.camera.getPicture(options);
+    window['faceType'] = faceType;
+    //let params = JSON.stringify({imageData:imageData, function:this.writeFile})
     window['plugins'].Base64.encodeFile(imageData, this.withBase64);
-    //window['resolveLocalFileSystemURL'](imageData, this.resolveLocalFileSystemURL,this.errorHandling);
+
+    window['resolveLocalFileSystemURL'](imageData, this.resolveLocalFileSystemURL, this.errorHandling);
     //let fileEntry:FileEntry = await this.file.resolveLocalFilesystemUrl(imageData);
     //fileEntry.getMetadata( );
-    setInterval(()=>{
-      setTimeout(()=>{
+
+    setInterval(() => {
+      setTimeout(() => {
         this.cd.detectChanges();
         this.hasPic = window['hasPic'];
+        if (this.hasPic) {
+          this.writeFile(window['currentPic'], window['faceType']);
+          this.hasPic = false;
+          window['hasPic'] = false;
+        }
       }, 1000)
     })
   }
 
   private withBase64(base64: any) {
     console.log('START withBase64');
+    //let object = JSON.parse(base64);
     var patt = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/;
     console.log("is valid base64? " + patt.test(base64.split(",", 2)[1])); // false!
     console.log('file base64 encoding: ' + base64);
-    window['user'].face = base64;
-    window['hasPic'] = true;
-    window['facePics'].push(base64);
+
     console.log('END withBase64');
   }
 
   resolveLocalFileSystemURL(fileEntry) {
-    console.log('START resolveLocalFileSystemURL');      
+    console.log('START resolveLocalFileSystemURL');
     fileEntry['file'](function (file) {
       var reader = new FileReader();
 
@@ -172,6 +266,11 @@ export class RegisterLoginComponent implements OnInit {
         var b64 = JSON.stringify(evt.target.result).split(",", 2)[1];
         console.log("is valid base64? " + patt.test(b64)); // false!
         console.log('Readed File: ' + b64)
+        window['currentPic'] = b64;
+        //object.function( base64, window['faceType']);
+        window['hasPic'] = true;
+
+
         //var bytes = atob(b64); // Failed to execute 'atob' on 'Window': The string to be decoded is not correctly encoded.
       };
 
@@ -181,10 +280,10 @@ export class RegisterLoginComponent implements OnInit {
       function (err) {
         console.error(err);
       });
-      console.log('END resolveLocalFileSystemURL');
+    console.log('END resolveLocalFileSystemURL');
   }
 
-  errorHandling(error){
+  errorHandling(error) {
     console.error(error);
   }
 
@@ -225,5 +324,60 @@ export class RegisterLoginComponent implements OnInit {
   // }
 
 
+  async writeFile(dataObj, fileName: string) {
+    let directoryEntry = await this.createOrAddFolderTo('Pixyo', 'storage/emulated/0/');
+    directoryEntry = await this.createOrAddFolderTo('ProfileImages', 'storage/emulated/0/Pixyo/');
 
+
+    fileName += '.jpg';
+    dataObj = this.fileService.base64toBlob(dataObj.substr(0, dataObj.length - 1), 'image/jpeg');
+    //dataObj = atob(dataObj);
+
+    directoryEntry.getFile(fileName, { create: true, exclusive: false }, function (fileEntry) {
+
+      // Create a FileWriter object for our FileEntry (log.txt).
+      fileEntry.createWriter(function (fileWriter) {//mirar como ir al internal storage
+
+        fileWriter.onwriteend = function () {
+          console.log("Successful file write...");
+          // readFile(fileEntry);
+        };
+
+        fileWriter.onerror = function (e) {
+          console.log("Failed file write: " + e.toString());
+        };
+
+        // If data object is not passed in,
+        // create a new Blob instead.
+        let blob: Blob;
+        if (!dataObj) {
+          blob = new Blob(['some file data'], { type: 'text/plain' });
+        }/*else{
+          blob = new Blob([dataObj], {type:'image/jpeg'});
+        }*/
+
+        fileWriter.write(dataObj);
+      });
+
+    }, this.errorHandling);
+  }
+
+  private async createOrAddFolderTo(name: string, folder: string) {
+    let directoryEntry;
+    try {
+      directoryEntry = await this.file.resolveDirectoryUrl('file:///' + folder + name);
+    } catch (e) {
+      directoryEntry = await this.file.resolveDirectoryUrl('file:///' + folder);
+      directoryEntry.getDirectory(name, { create: true, exclusive: false }, function () {
+        console.log("Successful folder write...");
+        // readFile(fileEntry);
+      }, function (e) {
+        console.log("Failed folder write: " + e.toString());
+      });
+      directoryEntry = await this.file.resolveDirectoryUrl('file:///' + folder + name);
+    }
+    return directoryEntry;
+  }
+
+  
 }

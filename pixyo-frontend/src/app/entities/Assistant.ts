@@ -5,7 +5,7 @@ import { User } from "./User";
 export class Assistant {
     //id: {eventid:string, userid:string};
     eventid:string; 
-    userid:string
+    userId:string
     event: EventObject;
     user: User;
     lastScan:Date;
@@ -16,6 +16,6 @@ export class Assistant {
 
     constructor(eventid: string, userid:string){
         this.eventid = eventid;
-        this.userid =  userid;
+        this.userId =  userid;
     }
 }

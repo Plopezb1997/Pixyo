@@ -13,28 +13,16 @@
       </ion-item>
       <p><b>Profile picture</b><br>  To help us identify which photos you appear in, we need you to upload some pictures of your face. The more you upload, the better will work. ¡Select a number of pictures and start uploading!</p>
       
-      <ion-item>
-        <ion-label>My faces</ion-label>
-        <ion-select multiple="true" okText="These!" [value]="['normal']" [(ngModel)]="faces">
-          <ion-select-option value="normal">Normal</ion-select-option><!--obligatorio-->
-          <ion-select-option value="smile">Smile</ion-select-option><!--obligatorio-->
-          <ion-select-option value="smile teeth">Smile teeth</ion-select-option>
-          <ion-select-option value="posse">Posse</ion-select-option>
-          <ion-select-option value="serious">Serious</ion-select-option>
-          <ion-select-option value="tongue">Tongue</ion-select-option>
-          <ion-select-option value="profile">Profile</ion-select-option><!--obligatorio-->
-          <ion-select-option value="diagonal">Diagonal</ion-select-option>
-          <ion-select-option value="top">Upper camera</ion-select-option>
-          <ion-select-option value="bottom">Lower camera</ion-select-option>
-          <ion-select-option value="funny">Funny</ion-select-option>
-        </ion-select>
-      </ion-item>
-     
-      <i *ngIf="!hasPic" class="fa fa-user-circle-o " aria-hidden="true" block style="font-size: 10em; align-items: center;"></i>
-      <ion-img *ngIf="hasPic" class="circle-cropper" width="100" height="100" [src]="user.face"></ion-img>
+      <ion-item *ngFor="let expression of variablesService.registerPics| keyvalue">
+        <app-take-face-pic [expression]="expression.key" style="width: 100%;" (takePic)="loadPhoto($event)"></app-take-face-pic></ion-item>
+        
       
-      <button *ngIf="hasPic" ion-button block (click)="register()" >Create Account</button>
-      <button *ngIf="!hasPic" ion-button block (click)="loadPhoto()" >Upload photo</button>
+     
+      <!--<i *ngIf="!hasPic" class="fas fa-user-circle " aria-hidden="true" block style="font-size: 10em; align-items: center;"></i>
+      <ion-img *ngIf="hasPic" class="circle-cropper" width="100" height="100" [src]="user.face"></ion-img>-->
+      
+      <button ion-button block (click)="register()" >Create Account</button>
+      <!--<button *ngIf="!hasPic" ion-button block (click)="loadPhoto()" >Upload photo</button>-->
       
   
     </ion-list>
