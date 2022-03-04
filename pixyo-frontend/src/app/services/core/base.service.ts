@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Filter } from '../../filters/filter';
 
-const USER_API = 'https://192.168.1.129:8080';
+const USER_API = 'https://192.168.1.130:8080';
 
 
 @Injectable({

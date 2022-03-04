@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { Assistant } from 'src/app/entities/Assistant';
-import { EventObject } from 'src/app/entities/Event';
+import { EventObject } from 'src/app/entities/EventObject';
 import { User } from 'src/app/entities/User';
 import { EventFilter } from 'src/app/filters/event.filter';
 import { EventService } from 'src/app/services/event.service';
@@ -37,11 +37,11 @@ export class JoinEventComponent implements OnInit {
         if (!!event.assistants) {
           while (!inEvent && i < event.assistants.length) {
             //inEvent = event.assistants[i].id.userid!==userObj.userId;
-            inEvent = event.assistants[i].userId!==userObj.userId;
+            inEvent = event.assistants[i].userid!==userObj.userid;
           }
         }
         if (!inEvent) {
-          let assistant:Assistant = new Assistant(event.eventId, event.creator.userId);
+          let assistant:Assistant = new Assistant(event.eventId, event.creator.userid);
           assistant.lastScan = event.startDate;
           event.assistants.push(assistant);
           await this.eventService.saveAssistants(event.assistants).toPromise();
@@ -51,6 +51,7 @@ export class JoinEventComponent implements OnInit {
           console.log(eventSaved.eventId);
           window['plugins'].toast.showLongCenter('Te has inscrito al evento '+ event.name+' de '+event.creator.name);
           this.router.navigate(['/homeEvent']);
+          this.eventService.retrieveUserEvents.next();
         } else {
           window['plugins'].toast.showLongBottom('Ya estás inscrito en el evento');
           this.router.navigate(['/homeEvent']);

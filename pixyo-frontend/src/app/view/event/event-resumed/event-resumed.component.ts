@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { EventObject } from 'src/app/entities/Event';
+import { EventObject } from 'src/app/entities/EventObject';
 @Component({
   selector: 'event-resumed',
   templateUrl: './event-resumed.component.html',

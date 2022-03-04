@@ -33,12 +33,15 @@
         </ion-item>
 
       </ion-list>
-      <div *ngIf="events" >
+      <div *ngIf="events">
         <p style="padding-left: 5%;">My events</p>
-          <event-resumed *ngFor="let event of events" [event]="event"></event-resumed>
+        <event-resumed *ngFor="let event of events" [event]="event"></event-resumed>
       </div>
-
-
+      <ion-list class="formulario">
+        <ion-item (click)="eventService.retrieveUserEvents.next()">
+          <i class="fas fa-sync" style="align-items: center;"></i>
+        </ion-item>
+      </ion-list>
     </div>
   </div>
 </ion-content>

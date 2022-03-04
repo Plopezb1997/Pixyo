@@ -17,11 +17,11 @@ export class AppComponent {
         androidService.getPermission('INTERNET');
         androidService.getPermission('ACCESS_NETWORK_STATE');
         androidService.getPermission('CAMERA');
-        variablesService.cordova.plugins.backgroundMode.setDefaults({ silent: true });
-        variablesService.cordova.plugins.backgroundMode.on('activate', function () {
-          variablesService.cordova.plugins.backgroundMode.disableWebViewOptimizations();
+        variablesService.cordova.plugins['backgroundMode'].setDefaults({ silent: true });
+        variablesService.cordova.plugins['backgroundMode'].on('activate', function () {
+          variablesService.cordova.plugins['backgroundMode'].disableWebViewOptimizations();
         });
-        variablesService.cordova.plugins.backgroundMode.enable();
+        variablesService.cordova.plugins['backgroundMode'].enable();
         variablesService.cordova.plugins.photoLibrary.requestAuthorization(
           function () {
             console.log('Tengo permisos a galería');

@@ -39,11 +39,11 @@ public class AssistantsID implements Serializable {
         return Objects.hash(eventid, eventid);
     }
 
-	public String getPicid() {
+	public String getEventId() {
 		return eventid;
 	}
 
-	public void setPicid(String picid) {
+	public void setEventId(String picid) {
 		this.eventid = picid;
 	}
 

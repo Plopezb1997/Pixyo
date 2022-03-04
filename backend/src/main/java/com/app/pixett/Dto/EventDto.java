@@ -19,7 +19,7 @@ public class EventDto implements Serializable{
 	private String eventCode;
 	private Date startDate;
 	private Date endDate;
-	private List<UserDto> assistants;
+	private List<AssistantDto> assistants;
 	private String title;
 	private UserDto creator;
 	public String getEventId() {
@@ -68,10 +68,10 @@ public class EventDto implements Serializable{
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-	public List<UserDto> getAssistants() {
+	public List<AssistantDto> getAssistants() {
 		return assistants;
 	}
-	public void setAssistants(List<UserDto> assistants) {
+	public void setAssistants(List<AssistantDto> assistants) {
 		this.assistants = assistants;
 	}
 	public String getTitle() {

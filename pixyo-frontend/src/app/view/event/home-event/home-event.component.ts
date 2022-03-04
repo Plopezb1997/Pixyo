@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
-import { EventObject } from 'src/app/entities/Event';
+import { EventObject } from 'src/app/entities/EventObject';
 import { EventFilter } from 'src/app/filters/event.filter';
 import { VariablesService } from 'src/app/services/core/variables.service';
 import { EventService } from 'src/app/services/event.service';
@@ -35,10 +35,12 @@ export class HomeEventComponent implements OnInit {
     public assistantService: AssistantService,
     public luxand: LuxandService) { }
   ngOnInit() {
+    this.eventService.retrieveUserEvents.subscribe(()=>{
     this.retrieveUserEvents().then(() => {
       this.processEvents();
     });
-    
+  });
+  this.eventService.retrieveUserEvents.next();
   }
 
 
@@ -82,27 +84,13 @@ export class HomeEventComponent implements OnInit {
     for (let i = 0; i < this.events.length; i++) {
       let event = this.events[i];
 
-      if (event.status == this.variablesService.STATUS.CREATION) {
-        if (this.utilService.nowBetween(new Date(event.startDate), new Date(event.endDate))) {
-          event.status = this.variablesService.STATUS.ACTIVE;
-          this.eventService.save(event);
-        } else if (this.utilService.dateBefore(new Date(event.endDate), new Date())) {
-          event.status = this.variablesService.STATUS.FINISHED;
-          this.eventService.save(event);
-          this.events.splice(i, 1);
-          i--;
-          //TODO EVOLUTIvO
-          /*Si el usuario tiene fotos subidas en las que no aparece nadie,
-          preguntarle a qué asistentes enviárselas*/
-          /*TODO EVOLUTIVO
-          Mostrar a quién se ha enviado la foto y preguntar si falta alguien*/
+      //if (event.status == this.variablesService.STATUS.CREATION) {
+        this.setEventStatus(event, i);
+     // }
 
-        }
-      }
-
-      if (event.status != this.variablesService.STATUS.CREATION) {
+      if (event.status != this.variablesService.STATUS.CREATION&&event.status == this.variablesService.STATUS.ACTIVE) {
         //TODO And days after ending are less than 3(?)
-        if (this.utilService.dateBefore(new Date(), this.utilService.addDays(event.endDate, 1))) {
+        if (this.utilService.dateBefore(new Date(), new Date(event.endDate))) {
 
 
           /*this.retrieveUserPics().then(files => {
@@ -111,8 +99,11 @@ export class HomeEventComponent implements OnInit {
           );*/
           let picsInPhone: Entry[] = [];
           let picsNotUploaded: Pic[] = [];
-          await this.scanFolders(picsInPhone, event);
-          await this.comparefiles(picsInPhone, event, picsNotUploaded);
+          let dates: Date[] = [];
+          let initialPicsScan = 'file';
+          await this.scanFolders(picsInPhone, event, dates);
+          //this.fileService.
+          await this.comparefiles(picsInPhone, event, picsNotUploaded, dates);
           await this.uploadImages(event, picsNotUploaded);
           //TODO faceapi scan and detect faces
           this.scanImages(picsNotUploaded);
@@ -125,56 +116,96 @@ export class HomeEventComponent implements OnInit {
       }
     }
   }
+  private async setEventStatus(event: EventObject, i: number) {
+    if (this.utilService.nowBetween(new Date(event.startDate), new Date(event.endDate))) {
+      event.status = this.variablesService.STATUS.ACTIVE;
+      await this.eventService.save(event).toPromise();
+    } else if (this.utilService.dateBefore(new Date(event.endDate), new Date())) {
+      event.status = this.variablesService.STATUS.FINISHED;
+      await this.eventService.save(event).toPromise();
+      this.events.splice(i, 1);
+      i--;
+      //TODO EVOLUTIvO
+      /*Si el usuario tiene fotos subidas en las que no aparece nadie,
+      preguntarle a qué asistentes enviárselas*/
+      /*TODO EVOLUTIVO
+      Mostrar a quién se ha enviado la foto y preguntar si falta alguien*/
+    }
+    return i;
+  }
+
   /**
    * Escanea la cámara entre las fechas determinadas
    * @param pics 
    * @param event 
    * @returns 
    */
-  async scanFolders(pics: Entry[], event: EventObject): Promise<Entry[]> {
+  async scanFolders(pics: Entry[], event: EventObject, dates: Date[]): Promise<Entry[]> {
     let path = 'DCIM/';
-    await this.scanFoldersAndroid(path, pics, event);
+    await this.scanFoldersAndroid(path, pics, event, dates);
     console.log(JSON.stringify(pics));
     //throw new Error('Method not implemented.');
+    let fechaFin: Date = new Date();
+    let assistant: Assistant = await this.retrieveUserAssistant(event);
+    assistant.lastScan = fechaFin;
+    assistant.userid = assistant.assistantId.userid;
+    assistant.eventid = assistant.assistantId.eventid;
+    await this.assistantService.save(assistant).toPromise().then().catch(error=>console.log(error));
     return pics;
   }
 
-  private async scanFoldersAndroid(path: string, pics: Entry[], event: EventObject) {
+  private async scanFoldersAndroid(path: string, pics: Entry[], event: EventObject, dates: Date[]) {
     let entries: Entry[] = await this.file.listDir('file:///storage/emulated/0/', path);
     for (let i = 0; i < entries.length; i++) {
       let entry = entries[i];
       if (entry.isDirectory
         && !entry.name.toLowerCase().includes('thumb')) {
-        await this.scanFoldersAndroid(entry.fullPath.substr(1), pics, event);
+        await this.scanFoldersAndroid(entry.fullPath.substr(1), pics, event, dates);
       } else if (entry.name.toLowerCase().endsWith('jpg')
         && !entry.name.toLowerCase().includes('thumb')) {
         //iOS macobserver.com/tips/how-to/how-to-convert-iphone-photos-jpg-format/
-        let assistant: Assistant;
-        let user: User = await this.utilService.getUser()
-        event.assistants.forEach(assist => {
-          if (assist.userId == user.userId) {
-            assistant = assist;
-          }
-        });
+        
+        let assistant: Assistant = await this.retrieveUserAssistant(event);
         if (assistant) {
-          console.log("VICTORIA");
           let fechaInicio: Date = new Date(assistant.lastScan?assistant.lastScan:event.startDate);
           let fechaFin: Date = new Date();
-          this.findPicsInStorage(entry, fechaInicio, fechaFin, pics);
-          assistant.lastScan = fechaFin;
-          await this.assistantService.save(assistant).toPromise();
+          let flagArray = []
+          this.findPicsInStorage(entry, fechaInicio, fechaFin, pics, flagArray, dates);
+          setTimeout(()=>{
+            while(flagArray.length==1&&flagArray[flagArray.length-1]==false){
+              console.log('no terminó')
+            }
+            console.log('TERMINÓ')
+          }, 500);
         }
       }
     }
     console.log(JSON.stringify(pics));
   }
 
-  private findPicsInStorage(entry: Entry, fechaInicio: Date, fechaFin: Date, pics: Entry[]) {
+  private async retrieveUserAssistant(event: EventObject) {
+    let assistant: Assistant;
+    let user: User = await this.utilService.getUser();
+    event.assistants.forEach(assist => {
+      if (assist.assistantId.userid == user.userid) {
+        assistant = assist;
+      }
+    });
+    return assistant;
+  }
+
+  private findPicsInStorage(entry: Entry, fechaInicio: Date, fechaFin: Date, pics: Entry[], flagArray:boolean[], dates: Date[]) {
+    flagArray.push(false);
     entry.getMetadata(metadata => {
       if (this.utilService.dateBefore(fechaInicio, metadata.modificationTime)
         && this.utilService.dateBefore(metadata.modificationTime, fechaFin)) {
         pics.push(entry);
+        dates.push(metadata.modificationTime);
       }
+      flagArray.push(true);
+    }, error=>{
+      flagArray.push(true);
+      console.log(error);
     });
   }
 
@@ -183,7 +214,7 @@ export class HomeEventComponent implements OnInit {
    * @param picsInPhone 
    * @param event 
    */
-  async comparefiles(picsInPhone: Entry[], event: EventObject, picsNotUploaded: Pic[]) {
+  async comparefiles(picsInPhone: Entry[], event: EventObject, picsNotUploaded: Pic[], dates: Date[]) {
     let picsSaved = await this.picService.findByEventId(event.eventId).toPromise();
 
     for (let i = 0; i < picsInPhone.length; i++) {
@@ -193,8 +224,9 @@ export class HomeEventComponent implements OnInit {
       //'Android','file:///storage/emulated/0/'+picsInPhone[i].fullPath
       //'file:///storage/emulated/0/',picsInPhone[i].fullPath
       //'file:///storage/emulated/0/',picsInPhone[i].fullPath.substr(1)
-      let file = await this.file.readAsDataURL('file:///storage/emulated/0/', picsInPhone[i].fullPath.substr(1));
+      let file = await this.fileService.readDataInBase64(picsInPhone[i].fullPath);
       console.log(file);
+      //let filearray = this.fileService.base64ToByteArray(file);
       let uploaded: boolean = false;
       for (let j = 0; j < picsSaved.length; j++) {
         if (file == picsSaved[j].pic) {
@@ -206,6 +238,7 @@ export class HomeEventComponent implements OnInit {
         pic.eventid = event;
         pic.pic = file;
         pic.scanned = false;
+        pic.creationDate = dates[i];
         picsNotUploaded.push(pic);
       }
     }
@@ -218,7 +251,7 @@ export class HomeEventComponent implements OnInit {
 
   async uploadImages(event: EventObject, picsNotUploaded: Pic[]) {
     for (let i = 0; i < picsNotUploaded.length; i++) {
-      let pic = picsNotUploaded[i]
+      let pic:Pic = picsNotUploaded[i];
       pic = await this.picService.save(pic).toPromise();
     }
   }

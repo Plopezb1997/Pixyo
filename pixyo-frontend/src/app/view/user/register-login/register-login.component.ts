@@ -99,12 +99,12 @@ export class RegisterLoginComponent implements OnInit {
     let entries = await this.fileService.listDirFromRoot('Pixyo/ProfileImages');
     this.cameraService.readFile(entries[0]);
 
-    setInterval(() => {
+    
       setTimeout(() => {
         this.cd.detectChanges();
         this.hasPic = window['hasPic'];
         if (this.hasPic) {
-          this.luxandService.createPerson(this.user.name, atob(window['currentPic'])).subscribe(object=>{
+          this.luxandService.createPerson(this.user.name, window['currentPic']).subscribe(object=>{
             this.user.luxandid = object['id'];
             this.secondIteration(object['id']);  
           });
@@ -112,7 +112,7 @@ export class RegisterLoginComponent implements OnInit {
           window['hasPic'] = false;
         }
       }, 1000)
-    })
+    
 
 
   }
@@ -125,7 +125,7 @@ export class RegisterLoginComponent implements OnInit {
           this.cd.detectChanges();
           this.hasPic = window['hasPic'];
           if (this.hasPic) {
-            this.luxandService.addFaceToPerson(id, atob(window['currentPic'])).subscribe();
+            this.luxandService.addFaceToPerson(id, window['currentPic']).subscribe();
             this.hasPic = false;
             window['hasPic'] = false;
           }

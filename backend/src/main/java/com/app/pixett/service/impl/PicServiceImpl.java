@@ -25,7 +25,7 @@ public class PicServiceImpl implements PicService{
 	}
 
 	@Override
-	public Pic saveEvent(Pic pic) {
+	public Pic savePic(Pic pic) {
 		return picRepository.save(pic);
 	}
 

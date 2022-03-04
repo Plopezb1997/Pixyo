@@ -33,13 +33,37 @@ import { TakeFacePicComponent } from './view/user/take-face-pic/take-face-pic.co
 import { LuxandService } from './services/luxand.service';
 import { CameraService } from './services/camera.service';
 import { FilesService } from './services/files.service';
+import { JoinEventComponent } from './view/event/join-event/join-event.component';
 @NgModule({
-  declarations: [AppComponent, RegisterLoginComponent, UploadPicComponent, HomeEventComponent, NewEventComponent, ShowErrorsComponent, EventResumedComponent, TakeFacePicComponent],
+  declarations: [AppComponent, 
+    RegisterLoginComponent, 
+    UploadPicComponent, 
+    HomeEventComponent, 
+    NewEventComponent, 
+    ShowErrorsComponent, 
+    EventResumedComponent, 
+    TakeFacePicComponent,
+  JoinEventComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, HttpClientModule, ReactiveFormsModule, TranslateModule.forRoot(),CommonModule
+  imports: [BrowserModule, 
+    IonicModule.forRoot(), 
+    AppRoutingModule, 
+    FormsModule, 
+    HttpClientModule, 
+    ReactiveFormsModule, 
+    TranslateModule.forRoot(),
+    CommonModule
     
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, AuthService, AndroidService, AndroidPermissions, Platform, HTTP, Camera, File, PhotoLibrary,//, AuthGuardService
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, 
+    AuthService, 
+    AndroidService, 
+    AndroidPermissions,
+     Platform, 
+     HTTP, 
+     Camera, 
+     File, 
+     PhotoLibrary,//, AuthGuardService
     authInterceptorProviders,
     UserService, EventService, NativeStorage,
     VariablesService,

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { Assistant } from 'src/app/entities/Assistant';
-import { EventObject } from 'src/app/entities/Event';
+import { EventObject } from 'src/app/entities/EventObject';
 import { EventService } from 'src/app/services/event.service';
 import { UtilService } from 'src/app/services/util.service';
 
@@ -31,7 +31,7 @@ export class NewEventComponent implements OnInit {
         this.event.status = this.utilService.dateBefore(new Date(), this.event.endDate)&&this.utilService.dateBefore(this.event.startDate, new Date())?'A':'C';
         this.event.assistants =[];
         let event: EventObject = await this.eventService.save(this.event).toPromise();
-        let assistant:Assistant = new Assistant(event.eventId, event.creator.userId);
+        let assistant:Assistant = new Assistant(event.eventId, event.creator.userid);
         assistant.lastScan = event.startDate;
         event.assistants.push(assistant);
         await this.eventService.saveAssistants(event.assistants).toPromise();

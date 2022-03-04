@@ -6,6 +6,13 @@ public class AssistantDto {
 	//public class AssistantDtoPK{
 		private String eventid;
 		private String userid;
+		private AssistantIdDto assistantId;
+		public AssistantIdDto getAssistantId() {
+			return assistantId;
+		}
+		public void setAssistantId(AssistantIdDto assistantId) {
+			this.assistantId = assistantId;
+		}
 		public String getEventid() {
 			return eventid;
 		}

@@ -20,14 +20,15 @@ public class Assistant{
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@MapsId("eventid")
-	@JoinColumn(name = "eventid")
-	/*@JoinColumn(name = "eventid", 
-	referencedColumnName = "eventid", nullable = false, insertable = false, updatable = false)*/
+	//@JoinColumn(name = "eventid")
+	@JoinColumn(name = "eventid", 
+	referencedColumnName = "eventid", nullable = false, insertable = false, updatable = false)
 	private Event eventAssistantRef;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userid")
-	@JoinColumn(name = "userid")
+	@JoinColumn(name = "userid",
+			referencedColumnName = "userid", nullable = false, insertable = false, updatable = false)
     private User userRef;
 	
 	@Column

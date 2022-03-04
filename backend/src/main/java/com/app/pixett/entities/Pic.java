@@ -1,5 +1,6 @@
 package com.app.pixett.entities;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -30,6 +31,9 @@ public class Pic {
 	@Lob
     @Column
 	private byte[] pic;
+	
+	@Column(name = "creationdate")
+	private Date creationDate;
 	
 	@Column
 	private boolean scanned;
@@ -79,6 +83,14 @@ public class Pic {
 
 	public void setPicManagement(List<PicManagement> picManagement) {
 		this.picManagement = picManagement;
+	}
+
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
 	}
 
 }

@@ -14,6 +14,6 @@ public interface PicService {
 	
 	public List<Pic> findPicsByEventId(String eventId);
 	
-	public Pic saveEvent(Pic pic);
+	public Pic savePic(Pic pic);
 
 }

@@ -1,8 +1,10 @@
-import { EventObject } from "./Event";
+import { EventObject } from "./EventObject";
 
 export class Pic {
-    picid: number;
+    picid: string;
     eventid: EventObject;
     pic: string;
     scanned:boolean;
+    userid:string;
+    creationDate:Date;
 }
