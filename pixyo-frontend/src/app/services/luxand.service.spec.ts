@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { LuxandService } from './luxand.service';
+import { FaceApiService } from './faceApi.service';
 
 describe('LuxandService', () => {
-  let service: LuxandService;
+  let service: FaceApiService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(LuxandService);
+    service = TestBed.inject(FaceApiService);
   });
 
   it('should be created', () => {

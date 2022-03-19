@@ -14,7 +14,7 @@ import { Assistant } from 'src/app/entities/Assistant';
 import { AssistantService } from 'src/app/services/assistant.service';
 import * as faceapi from 'face-api.js';
 import { FilesService } from 'src/app/services/files.service';
-import { LuxandService } from 'src/app/services/luxand.service';
+import { FaceApiService } from 'src/app/services/faceApi.service';
 @Component({
   selector: 'app-home-event',
   templateUrl: './home-event.component.html',
@@ -33,7 +33,7 @@ export class HomeEventComponent implements OnInit {
     public picService: PicService,
     public fileService: FilesService,
     public assistantService: AssistantService,
-    public luxand: LuxandService) { }
+    public luxand: FaceApiService) { }
   ngOnInit() {
     this.eventService.retrieveUserEvents.subscribe(()=>{
     this.retrieveUserEvents().then(() => {
@@ -258,8 +258,8 @@ export class HomeEventComponent implements OnInit {
   async scanImages(pics: Pic[]) {
     for(let i =0; i<pics.length;i++){
       let pic = pics[i];
-      let file = this.fileService.base64toBlob(pic.pic,this.variablesService.picFormat );
-      let result = await this.luxand.recognizePeople(file).toPromise();
+      //let file = this.fileService.base64toBlob(pic.pic,this.variablesService.picFormat );
+      let result = await this.luxand.recognizePeople(pic.pic).toPromise();
     }
   
   }

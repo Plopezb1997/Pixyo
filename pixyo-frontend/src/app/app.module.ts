@@ -30,7 +30,7 @@ import { UtilService } from './services/util.service';
 import { EventResumedComponent } from './view/event/event-resumed/event-resumed.component';
 import { CommonModule } from '@angular/common';
 import { TakeFacePicComponent } from './view/user/take-face-pic/take-face-pic.component';
-import { LuxandService } from './services/luxand.service';
+import { FaceApiService } from './services/faceApi.service';
 import { CameraService } from './services/camera.service';
 import { FilesService } from './services/files.service';
 import { JoinEventComponent } from './view/event/join-event/join-event.component';
@@ -68,7 +68,7 @@ import { JoinEventComponent } from './view/event/join-event/join-event.component
     UserService, EventService, NativeStorage,
     VariablesService,
     UtilService,
-    LuxandService,
+    FaceApiService,
     CameraService,
     FilesService
   ],

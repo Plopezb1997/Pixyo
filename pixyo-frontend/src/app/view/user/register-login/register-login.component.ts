@@ -15,7 +15,7 @@ import { Device } from '@ionic-native/device';
 import 'jqueryui';*/
 import { VariablesService } from 'src/app/services/core/variables.service';
 import { UtilService } from 'src/app/services/util.service';
-import { LuxandService } from 'src/app/services/luxand.service';
+import { FaceApiService } from 'src/app/services/faceApi.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { FilesService } from 'src/app/services/files.service';
 import { CameraService } from 'src/app/services/camera.service';
@@ -45,7 +45,7 @@ export class RegisterLoginComponent implements OnInit {
     private photoLibrary: PhotoLibrary,
     public variablesService: VariablesService,
     public utilService: UtilService,
-    public luxandService: LuxandService,
+    public faceApi: FaceApiService,
     public toast: ToastService,
     public fileService: FilesService,
     public cameraService: CameraService
@@ -104,9 +104,9 @@ export class RegisterLoginComponent implements OnInit {
         this.cd.detectChanges();
         this.hasPic = window['hasPic'];
         if (this.hasPic) {
-          this.luxandService.createPerson(this.user.name, window['currentPic']).subscribe(object=>{
-            this.user.luxandid = object['id'];
-            this.secondIteration(object['id']);  
+          this.faceApi.createPerson(this.user.name).subscribe(object=>{
+            this.user.luxandid = object['personId'];
+            this.addImagesToPerson(object['personId']);  
           });
           this.hasPic = false;
           window['hasPic'] = false;
@@ -116,7 +116,7 @@ export class RegisterLoginComponent implements OnInit {
 
 
   }
-  async secondIteration(id:string) {
+  async addImagesToPerson(id:string) {
     let entries = await this.fileService.listDirFromRoot('Pixyo/ProfileImages');
     for (let i = 1; i < entries.length; i++) {
       this.cameraService.readFile(entries[i]);
@@ -125,7 +125,7 @@ export class RegisterLoginComponent implements OnInit {
           this.cd.detectChanges();
           this.hasPic = window['hasPic'];
           if (this.hasPic) {
-            this.luxandService.addFaceToPerson(id, window['currentPic']).subscribe();
+            this.faceApi.addFaceToPerson(id, window['currentPic']).subscribe();
             this.hasPic = false;
             window['hasPic'] = false;
           }
